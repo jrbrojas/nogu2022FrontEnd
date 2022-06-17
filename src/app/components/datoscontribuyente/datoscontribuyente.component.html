@@ -1,0 +1,505 @@
+<div class="container">
+  <div
+    class="login-wrapper"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    style="width: 100%"
+  >
+    <div class="row" style="width: 100%">
+      <div class="col-12">
+        <mat-card class="box">
+          <table style="width: 100%">
+            <tr style="width: 100%">
+              <td style="width: 100%; text-align: right">
+                <button
+                  mat-icon-button
+                  class="cursor-pointer"
+                  aria-label="Volver al Inicio"
+                  (click)="onReset()"
+                >
+                  <mat-icon
+                    class="text-dark"
+                    style="font-size: 30px; color: black"
+                    >refresh</mat-icon
+                  >
+                </button>
+              </td>
+            </tr>
+          </table>
+          <hr />
+          <mat-card-header>
+            <mat-card-title>Datos Básicos del Titular </mat-card-title>
+          </mat-card-header>
+          <form>
+            <mat-card-content>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  matInput
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="logInComponent.datosEntityModuleSend.ruc"
+                  (blur)="onBucarInformacion()"
+                  placeholder="Número de RUC"
+                  required
+                />
+              </mat-form-field>
+              <mat-error
+                *ngIf="
+                  logInComponent.datosEntityModuleSend.ruc == null ||
+                  logInComponent.datosEntityModuleSend.ruc.length == 0
+                "
+              >
+                <mat-error class="error-message">Dato obligatorio</mat-error>
+              </mat-error>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [(ngModel)]="logInComponent.datosEntityModuleSend.razonsocial"
+                  [ngModelOptions]="{ standalone: true }"
+                  matInput
+                  placeholder="Nombre, denominación o Razón Social"
+                  required
+                />
+              </mat-form-field>
+              <mat-error
+                *ngIf="
+                  logInComponent.datosEntityModuleSend.razonsocial == null ||
+                  logInComponent.datosEntityModuleSend.razonsocial.length == 0
+                "
+              >
+                <mat-error class="error-message">Dato obligatorio</mat-error>
+              </mat-error>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [(ngModel)]="
+                    logInComponent.datosEntityModuleSend.partida_registral
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  matInput
+                  placeholder="Partida Registral"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [(ngModel)]="
+                    logInComponent.datosEntityModuleSend.sede_registral
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  matInput
+                  placeholder="Sede Registral"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [(ngModel)]="logInComponent.datosEntityModuleSend.direccion"
+                  [ngModelOptions]="{ standalone: true }"
+                  matInput
+                  placeholder="Dirección"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <mat-select
+                  [formControl]="ubigeoCtrl"
+                  placeholder="Distrito"
+                  #singleSelect
+                >
+                  <mat-option>
+                    <ngx-mat-select-search
+                      [formControl]="ubigeoFilterCtrl"
+                    ></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option
+                    *ngFor="let bank of filteredUbigeo | async"
+                    [value]="bank"
+                  >
+                    {{ bank.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [(ngModel)]="logInComponent.datosEntityModuleSend.telefono"
+                  [ngModelOptions]="{ standalone: true }"
+                  matInput
+                  placeholder="Número de Teléfono"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [(ngModel)]="logInComponent.datosEntityModuleSend.correo"
+                  [ngModelOptions]="{ standalone: true }"
+                  matInput
+                  placeholder="Correo Electronico"
+                />
+              </mat-form-field>
+              <label id="example-radio-group-label"
+                >¿Es principal contribuyente?</label
+              >
+              <br />
+              <mat-radio-group
+                [(ngModel)]="
+                  logInComponent.datosEntityModuleSend.principal_contribuyente
+                "
+                [ngModelOptions]="{ standalone: true }"
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+              >
+                <mat-radio-button
+                  class="example-radio-button"
+                  *ngFor="let separacion of separacions"
+                  [value]="separacion.id"
+                >
+                  {{ separacion.nombre }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <br />
+              <label id="example-radio-group-label"
+                >¿Ha presentado declaración jurada de beneficiarios final ante
+                la SUNAT?
+              </label>
+              <br />
+              <mat-radio-group
+                [(ngModel)]="
+                  logInComponent.datosEntityModuleSend.declaracion_jurada
+                "
+                [ngModelOptions]="{ standalone: true }"
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+              >
+                <mat-radio-button
+                  class="example-radio-button"
+                  *ngFor="let separacion of separacions"
+                  [value]="separacion.id"
+                >
+                  {{ separacion.nombre }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <br />
+              <label id="example-radio-group-label"
+                >Objeto social y actividad económica principal:
+              </label>
+              <br />
+              <br />
+              <section class="example-section">
+                <div *ngIf="movil">
+                  <div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.comercial
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Comercial</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.industrial
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Industrial</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.construccion
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Construcción</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.transporte
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Transporte</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="logInComponent.datosEntityModuleSend.pesca"
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Pesca</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend
+                            .intermediacion_financiera
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        ><label>Intermediación Financiera</label></mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend
+                            .hoteles_restaurantes
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Hoteles y Restaurantes
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.agricultura
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Agricultura</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.ensenanza
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Enseñanza</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-12">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend
+                            .suministro_electricidad_gas
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        ><label>Suministro de electricidad gas y agua </label>
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-12">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.otro_opcion
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Otros describir</mat-checkbox
+                      >
+                    </div>
+
+                    <mat-form-field
+                      appearance="outline"
+                      style="height: 70px"
+                      class="example-full-width"
+                      *ngIf="
+                        logInComponent.datosEntityModuleSend.otro_opcion == true
+                      "
+                    >
+                      <input
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.otros_describir
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        matInput
+                        placeholder="Describir"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div *ngIf="!movil">
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.comercial
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Comercial</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.industrial
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Industrial</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.construccion
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Construcción</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.transporte
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Transporte</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="logInComponent.datosEntityModuleSend.pesca"
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Pesca</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend
+                            .intermediacion_financiera
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        ><label>Intermediación Financiera</label></mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend
+                            .hoteles_restaurantes
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Hoteles y Restaurantes
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.agricultura
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Agricultura</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.ensenanza
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Enseñanza</mat-checkbox
+                      >
+                    </div>
+                    <div class="col-12">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend
+                            .suministro_electricidad_gas
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        ><label>Suministro de electricidad gas y agua </label>
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-12">
+                      <mat-checkbox
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.otro_opcion
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        class="example-margin"
+                        >Otros describir</mat-checkbox
+                      >
+                    </div>
+
+                    <mat-form-field
+                      appearance="outline"
+                      style="height: 70px"
+                      class="example-full-width"
+                      *ngIf="
+                        logInComponent.datosEntityModuleSend.otro_opcion == true
+                      "
+                    >
+                      <input
+                        [(ngModel)]="
+                          logInComponent.datosEntityModuleSend.otros_describir
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        matInput
+                        placeholder="Describir"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </section>
+            </mat-card-content>
+            <br />
+            <div
+              *ngIf="
+                logInComponent.datosEntityModuleSend.razonsocial != null &&
+                logInComponent.datosEntityModuleSend.ruc != null &&
+                logInComponent.datosEntityModuleSend.ruc.length > 0 &&
+                logInComponent.datosEntityModuleSend.razonsocial.length > 0
+              "
+            >
+              <button
+                mat-stroked-button
+                color="accent"
+                (click)="next()"
+                class="btn-block"
+              >
+                Continuar >>
+              </button>
+            </div>
+          </form>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="container">
+  <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div class="row">
+      <div class="col-12">
+        <div *ngIf="!acuerdo">
+          <div *ngIf="spinner">
+            <mat-card class="box">
+              <mat-card-header>
+                <mat-card-title>Confidencialidad de Datos</mat-card-title>
+              </mat-card-header>
+              <form>
+                <mat-card-content>
+                  <br>
+                  <p style="font-size: 25; color: green;"><strong>Registrando datos...</strong></p>
+                </mat-card-content>
+              </form>
+            </mat-card>
+          </div>
+          <div *ngIf="!spinner">
+            <mat-card class="box">
+              <table style="width: 100%;">
+                <tr style="width: 100%;">
+                  <td style="width: 50%; text-align: left;">
+                    <button mat-icon-button class="cursor-pointer" aria-label="Retornar" (click)="return()">
+                      <mat-icon class="text-dark" style="font-size: 30px; color: black;">arrow_back</mat-icon>
+                    </button>
+                  </td>
+                  <td style="width: 50%; text-align: right;">
+                    <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                      <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <hr>
+              <mat-card-header>
+                <mat-card-title>Confidencialidad de Datos</mat-card-title>
+              </mat-card-header>
+              <form>
+                <br>
+                <div *ngIf="tipo">
+                  <button mat-stroked-button value="reset" color="accent" (click)="postInsert()"
+                    class="btn-block">Guardar</button>
+                </div>
+                <div *ngIf="!tipo">
+                  <mat-card-content>
+                    <br>
+                    <section class="example-section">
+                      <div class="row">
+                        <div class="col-12">
+                          <mat-checkbox [(ngModel)]="acuerdos1" [ngModelOptions]="{standalone: true}"
+                            class="example-margin" id="declaro"></mat-checkbox> Declaro bajo juramento que que toda
+                          la información que he consignado es verdadera.
+                        </div>
+                        <div class="col-12">
+                          <mat-checkbox [(ngModel)]="acuerdos2" [ngModelOptions]="{standalone: true}"
+                            class="example-margin" id="acepto"></mat-checkbox> He leído y acepto las condiciones de
+                          tratamientos de mis datos personales.
+                        </div>
+
+                        <div class="col-12"><a [routerLink]="" queryParamsHandling="preserve"
+                            (click)="openCondiciones()">Leer datos y condiciones</a>
+                        </div>
+                      </div>
+                    </section>
+                  </mat-card-content>
+                  <div style=" float:right;">
+                    <re-captcha (resolved)="resolved($event)" siteKey="6LcSYscZAAAAAD3AnCSlBK7CR6pa7oFC7x-_p7Bs">
+                    </re-captcha>
+                    <div class="g-recaptcha" data-sitekey="6LcSYscZAAAAAJ13MZM1qZS3EHvc_4x7gGSobShr"
+                      data-callback="correctCaptcha">
+                    </div>
+                  </div>
+                  <div *ngIf=(estadoCapcha)>
+                    <form action="javascript:grecaptcha.reset(widgetId2);">
+                      <br><br><br><br>
+                      <button mat-stroked-button value="reset" color="accent" (click)="postInsert()"
+                        class="btn-block">Registrar
+                        Datos</button>
+                    </form>
+                  </div>
+                </div>
+              </form>
+            </mat-card>
+          </div>
+        </div>
+        <div *ngIf="acuerdo">
+          <mat-card class="box">
+            <table style="width: 100%;">
+              <tr style="width: 100%;">
+                <td style="width: 50%; text-align: left;">
+                  <button mat-icon-button class="cursor-pointer" aria-label="Retornar" (click)="return()">
+                    <mat-icon class="text-dark" style="font-size: 30px; color: black;">arrow_back</mat-icon>
+                  </button>
+                </td>
+                <td style="width: 50%; text-align: right;">
+                  <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                    <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <hr>
+            <mat-card-header>
+              <mat-card-title>PROTECCCIÓN DE DATOS PERSONALES</mat-card-title>
+            </mat-card-header>
+            <form>
+              <br>
+              <mat-card-content>
+                <br>
+                <section class="example-section">
+                  <div class="row">
+                    <div class="col-12">
+                      <p style="text-align: justify;">
+                        <strong>DATOS PERSONALES (LEY N° 29733) </strong>
+                        <br>
+                        <br>
+                        NOGUDATOS ES UN APLICATIVO DEL NOTARIO OSCAR EDUARDO GONZALEZ URIA. EL NOTARIO INFORMA QUE LOS DATOS PERSONALES INGRESADOS EN ESTE APLICATIVO SERAN  TRATADOS, INCORPORADOS A BASES DE DATOS Y/O TRANSFERIDOS UNICAMENTE PARA EL CUMPLIMIENTO DE LOS FINES DE LA LEY DEL NOTARIADO, PARA LA PREVENCION E INVESTIGACION DEL DELITO Y OTRAS LEYES ESPECIALES QUE LO EXIGEN Y/O REQUERIMIENTOS DE AUTORIDADES. EL PLAZO ES INDETERMINADO. LOS DERECHOS DE ACCESO, RECTIFICACION, CANCELACION Y OPOSICION, SE EJERCEN EN EL DESPACHO NOTARIAL, AV. REPUBLICA DE PANAMA N° 6596, DISTRITO DE BARRANCO, PROVINCIA Y DEPARTAMENTO DE LIMA
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </mat-card-content>
+              <br><br><br><br>
+              <button mat-stroked-button value="reset" color="accent" (click)="openCondiciones()"
+                class="btn-block">Volver</button>
+            </form>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

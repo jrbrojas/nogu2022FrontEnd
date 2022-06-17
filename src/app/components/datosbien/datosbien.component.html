@@ -1,0 +1,169 @@
+<div class="container">
+  <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div class="row">
+      <div class="col-12">
+        <mat-card class="box">
+          <table style="width: 100%;">
+            <tr style="width: 100%;">
+              <td style="width: 50%; text-align: left;">
+                <button mat-icon-button class="cursor-pointer" aria-label="Retornar" (click)="return()">
+                  <mat-icon class="text-dark" style="font-size: 30px; color: black;">arrow_back</mat-icon>
+                </button>
+              </td>
+              <td style="width: 50%; text-align: right;">
+                <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                  <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </table>
+          <hr>
+          <mat-card-header>
+            <mat-card-title>Datos del Bien</mat-card-title>
+          </mat-card-header>
+          <form>
+            <mat-card-content>
+              <br>
+              <label id="example-radio-group-label">Seleccione</label> <br>
+              <mat-radio-group aria-labelledby="example-radio-group-label"
+                [(ngModel)]="logInComponent.datosBienModuleSend.tipo_bien" [ngModelOptions]="{standalone: true}"
+                class="example-radio-group">
+                <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season.id">
+                  {{season.nombre}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <br><label><strong>Modalidad de transferencia:</strong></label><br>
+              <section class="example-section">
+                <div *ngIf="movil">
+                  <div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_compra_venta"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Compra-venta</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_donacion"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Donación
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_anticipo_legitima"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Anticipo de legítima
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_dacion_pago"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Dación de Págo
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_permuta"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Permuta</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_otro"
+                        [ngModelOptions]="{standalone: true}" class="example-margin" (click)="describir()">Otros
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                  <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width" *ngIf="logInComponent.datosBienModuleSend.mp_otro == true">
+                    <input [(ngModel)]="logInComponent.datosBienModuleSend.mp_otros_describir"
+                      [ngModelOptions]="{standalone: true}" matInput placeholder="Describir">
+                  </mat-form-field>
+                </div>
+                <div *ngIf="!movil">
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_compra_venta"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Compra-venta</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_donacion"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Donación
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_permuta"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Permuta</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_dacion_pago"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Dación de Págo
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_anticipo_legitima"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Anticipo de legítima
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosBienModuleSend.mp_otro"
+                        [ngModelOptions]="{standalone: true}" class="example-margin" (click)="describir()">Otros
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                  <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width" *ngIf="logInComponent.datosBienModuleSend.mp_otro == true">
+                    <input [(ngModel)]="logInComponent.datosBienModuleSend.mp_otros_describir"
+                      [ngModelOptions]="{standalone: true}" matInput placeholder="Describir">
+                  </mat-form-field>
+                </div>
+              </section>
+              <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 0">
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                  <input [ngModelOptions]="{standalone: true}" maxlength="6" required [(ngModel)]="logInComponent.datosBienModuleSend.num_placa"
+                    matInput placeholder="Número de Placa ABC123">
+                </mat-form-field>
+              </div>
+              <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 0">
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="logInComponent.datosBienModuleSend.marca"
+                    matInput placeholder="Marca">
+                </mat-form-field>
+              </div>
+              <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 0">
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="logInComponent.datosBienModuleSend.modelo"
+                    matInput placeholder="Modelo">
+                </mat-form-field>
+              </div>
+              <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                <mat-label>Tipo de Moneda</mat-label>
+                <mat-select placeholder="moneda" [(ngModel)]="logInComponent.datosBienModuleSend.moneda" name="operacion">
+                  <mat-option *ngFor="let moneda of monedas" [value]="moneda.id">
+                    {{moneda.nombre}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="logInComponent.datosBienModuleSend.valor"
+                  matInput placeholder="Valor de  la transacción">
+              </mat-form-field>
+              <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 1">
+                <label id="example-radio-group-labels">¿Cuenta con tarjeta de propiedad?</label> <br>
+                <mat-radio-group aria-labelledby="example-radio-group-labels"
+                  [(ngModel)]="logInComponent.datosBienModuleSend.targeta_propiedad" [ngModelOptions]="{standalone: true}"
+                  class="example-radio-group">
+                  <mat-radio-button class="example-radio-button" *ngFor="let season of separacions" [value]="season.id">
+                    {{season.nombre}}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width"
+                  *ngIf="logInComponent.datosBienModuleSend.targeta_propiedad == 0">
+                  <input [(ngModel)]="logInComponent.datosBienModuleSend.numero_tarjeta_propiedad"
+                    [ngModelOptions]="{standalone: true}" matInput placeholder="Ingresar número">
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+            <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 0 && logInComponent.datosBienModuleSend.num_placa.length > 0">
+              <button mat-stroked-button color="accent" (click)="datosfinales()" class="btn-block">Continuar >></button>
+            </div>
+            <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien !== 0">
+              <button mat-stroked-button color="accent" (click)="datosfinales()" class="btn-block">Continuar >></button>
+            </div>
+          </form>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

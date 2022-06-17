@@ -1,0 +1,104 @@
+<div *ngIf="!tipo">
+    <div class="container">
+        <mat-toolbar color="primary" class="app-header" style="height: 60px;">
+            <table align="center" style="width: 100%;">
+                <tr>
+                    <td style="text-align: center; width: 50%;">
+                        <hr>
+                        <button mat-icon-button style="width: 100%;" (click)="registro()">
+                            <div style="height: 10px; width: 100%; text-align: center;">
+                                <mat-icon>home</mat-icon>
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; height: 7px; ">Volver al Inicio</label>
+                            </div>
+                        </button>
+                    </td>
+                    <td style="text-align: center; width: 50%;">
+                        <hr>
+                        <button mat-icon-button style="width: 100%;" (click)="lista()">
+                            <div style="height: 10px; width: 100%; text-align: center;">
+                                <mat-icon>login</mat-icon>
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; height: 7px;">© Uso Exclusivo de la notaría</label>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; width: 50%;">
+                    </td>
+                    <td style="text-align: center; width: 50%;">
+                        <p style="font-size: 10px;"></p>
+                    </td>
+                </tr>
+            </table>
+        </mat-toolbar>
+    </div>
+</div>
+<div *ngIf="tipo">
+        <mat-toolbar color="primary" class="app-header">
+            <button mat-button disabled>
+                <img class="jpg-icon"  src="assets/logo_nav.png" 
+                    style="max-width: 60px; min-width: 60px;">
+              </button>
+            <span>SISTEMA REGISTRO NOTARIAL</span>
+            <span class="example-spacer"></span>
+            <button mat-icon-button class="example-icon favorite-icon" (click)="registro()" aria-label="Example icon-button with heart icon">
+              <mat-icon>add</mat-icon> Nuevo Registro
+            </button>
+            <button mat-icon-button class="example-icon favorite-icon" (click)="plantillas()" aria-label="Example icon-button with heart icon">
+              <mat-icon>assignment</mat-icon> KARDEX
+            </button>
+            <button mat-icon-button class="example-icon" (click)="lista()" aria-label="Example icon-button with share icon">
+              <mat-icon>assignment</mat-icon> Lista Registros
+            </button>
+            <button mat-icon-button class="example-icon" (click)="validar()" aria-label="Example icon-button with share icon">
+              <mat-icon>exit_to_app</mat-icon> Salir
+            </button>
+          </mat-toolbar>
+
+        <!--<mat-toolbar color="primary" class="app-header" style="height: 90px;">
+            <table align="center" style="width: 100%;">
+                <tr>
+                    <td style="text-align: center; width: 33%;">
+                        <button mat-icon-button style="width: 100%;" (click)="registro()">
+                            <div style="height: 15px; width: 100%; text-align: center;">
+                                <mat-icon>home</mat-icon>
+                            </div>
+                            <div>
+                                <label style="font-size: 12px; height: 10px;">Volver al Inicio</label>
+                            </div>
+                        </button>
+                    </td>
+                    <td style="text-align: center; width: 33%;">
+                        <button mat-icon-button style="width: 100%;" (click)="lista()">
+                            <div style="height: 15px; width: 100%; text-align: center;">
+                                <mat-icon>assignment</mat-icon>
+                            </div>
+                            <div>
+                                <label style="font-size: 12px; height: 10px;">Lista</label>
+                            </div>
+                        </button>
+                    </td>
+                    <td style="text-align: center; width: 33%;">
+                        <button mat-icon-button style="width: 100%;" (click)="validar()">
+                            <div style="height: 15px; width: 100%; text-align: center;">
+                                <mat-icon>exit_to_app</mat-icon>
+                            </div>
+                            <div>
+                                <label style="font-size: 12px; height: 10px;">Salir</label>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </mat-toolbar>-->
+</div>
+<router-outlet></router-outlet>
+<!--<mat-toolbar color='primary' class="usoExplusivo">
+    <span class='spacer'></span>
+      <h4>© Uso Exclusivo de la notaría - {{ year }}.</h4>
+    <span class='spacer'></span>
+</mat-toolbar>-->

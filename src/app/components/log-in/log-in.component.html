@@ -1,0 +1,273 @@
+<div *ngIf="registroPosi == 0" class="container login-wrapper animate__animated animate__bounce" fxLayout="row"
+  fxLayoutAlign="center center">
+  <div class="row" *ngIf="inicio">
+    <div class="col-12">
+      <mat-card class="box">
+        <div *ngIf="movil">
+          <mat-card-header>
+            <table style="width: 100%;">
+              <tr style="width: 100%;">
+                <td style="width: 100%; text-align: right;">
+                  <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                    <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <hr>
+            <mat-card-title>
+              <br>
+              <p style="color: darkblue; font-size: 0.5cm;"><strong>NOTARIO<br>OSCAR EDUARDO GONZALEZ
+                  URIA<br>NOGUDATOS</strong></p>
+            </mat-card-title>
+          </mat-card-header>
+          <br>
+          <div style="text-align: left;">
+            <a (click)="onInicio()"><img style="width: 100%; height: 100%;" src="assets/logoInicio.png"></a>
+          </div>
+          <br>
+          <div style="text-align: center;">
+            <button mat-flat-button color="primary" (click)="onInicio()">INGRESE SUS DATOS</button>
+          </div>
+          <br>
+        </div>
+        <div *ngIf="!movil">
+          <mat-card-header>
+            <table style="width: 100%;">
+              <tr style="width: 100%;">
+                <td style="width: 100%; text-align: right;">
+                  <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                    <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <hr>
+            <mat-card-title>
+              <br>
+              <p style="color: darkblue;"><strong>NOTARIO<br>OSCAR EDUARDO GONZALEZ
+                  URIA<br>NOGUDATOS</strong></p>
+            </mat-card-title>
+          </mat-card-header>
+          <br>
+          <div style="text-align: center;">
+            <a (click)="onInicio()"><img src="assets/logoInicio.png"></a>
+          </div>
+          <br>
+          <div style="text-align: center;">
+            <button mat-flat-button color="primary" (click)="onInicio()">INGRESE SUS DATOS</button>
+          </div>
+          <br>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row" *ngIf="!inicio">
+    <div class="col-12" *ngIf="opciones.tipo_persona == 0">
+      <mat-card class="box">
+        <table style="width: 100%;">
+          <tr style="width: 100%;">
+            <td style="width: 100%; text-align: right;">
+              <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <mat-card-header>
+          <mat-card-title> Seleccione una Opción</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <button type="button" class="btn btn-primary button_large" id="juridica" (click)="acciones(1)">Persona
+            <br>Jurídica
+            <i class="fa fa-building" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn-primary button_large" id="natural" (click)="acciones(2)">Persona<br>
+            Natural
+            <i class="fa fa-user" aria-hidden="true"></i></button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-12" *ngIf="opciones.tipo_persona == 2 && opciones.opcion_transmite==0 && documento == 0">
+      <mat-card class="box">
+        <table style="width: 100%;">
+          <tr style="width: 100%;">
+            <td style="width: 100%; text-align: right;">
+              <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <mat-card-header>
+          <mat-card-title> Seleccione una Opción</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <button type="button" class="btn btn-primary button_large" id="juridica" (click)="titular(1)">Titular
+            <i class="fa fa-building" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn-primary button_large" id="natural" (click)="titular(2)">Apoderado
+            <i class="fa fa-user" aria-hidden="true"></i></button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-12" *ngIf=" opciones.tipo_transmite == 0 ">
+      <mat-card class="box">
+        <table style="width: 100%;">
+          <tr style="width: 100%;">
+            <td style="width: 100%; text-align: right;">
+              <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <mat-card-header>
+          <mat-card-title> ¿Qué trámite va realizar?</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <button type="button" class="btn btn-primary button_large" id="juridica" (click)="transmite(1)">Escritura
+            Pública
+          </button>
+          <button type="button" class="btn btn-primary button_large" id="natural" (click)="transmite(2)">Transferencia
+            <br>Vehícular</button>
+          <button type="button" class="btn btn-primary button_large" id="natural" (click)="transmite(3)">Proceso No
+            <br>Contencioso</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-12" *ngIf="opciones.tipo_transmite == 2">
+      <mat-card class="box">
+        <table style="width: 100%;">
+          <tr style="width: 100%;">
+            <td style="width: 100%; text-align: right;">
+              <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <mat-card-header>
+          <mat-card-title>Seleccione una Opción</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <button type="button" class="btn btn-primary button_large" (click)="trasnferencia(1)">Transferente
+          </button>
+          <button type="button" class="btn btn-primary button_large" (click)="trasnferencia(2)">Adquiriente</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-12" *ngIf="documento == 1">
+      <mat-card class="box">
+        <table style="width: 100%;">
+          <tr style="width: 100%;">
+            <td style="width: 100%; text-align: right;">
+              <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <mat-card-header>
+          <mat-card-title>¿Se ha registrado anteriormente?</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <table>
+            <tr>
+              <td>
+                <button mat-flat-button color="primary" (click)="onOpcionDocumento(1)">Si</button>
+              </td>
+              <td>
+                <button mat-flat-button color="primary" (click)="onOpcionDocumento(2)">No, ir al formulario</button>
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-12" *ngIf="documento == 2">
+      <mat-card class="box">
+        <table style="width: 100%;">
+          <tr style="width: 100%;">
+            <td style="width: 100%; text-align: right;">
+              <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <mat-card-header>
+          <mat-card-title>Número Documento</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+            <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="NDocumento"
+              placeholder="Ingrese Número Documento">
+          </mat-form-field>
+          <div *ngIf="NDocumento.length == 0">
+            <mat-error>
+              <mat-error class="error-message">Dato obligatorio</mat-error>
+            </mat-error>
+          </div>
+          <br>
+          <table>
+            <tr>
+              <td>
+                <button mat-flat-button color="primary" style="padding-right: 10px;" (click)="onDocumento()">Cargar
+                  información</button>
+              </td>
+              <td>
+                <button mat-flat-button color="primary" (click)="cancelar()">Volver</button>
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div *ngIf="registroPosi > 0">
+  <mat-tab-group>
+    <mat-tab *ngIf="registroPosi == 1">
+      <app-register></app-register>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 2">
+      <app-datoslaborales></app-datoslaborales>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 3">
+      <app-datosapoderado></app-datosapoderado>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 7">
+      <app-datosbien></app-datosbien>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 8">
+      <app-datosjurados></app-datosjurados>
+    </mat-tab>
+
+
+    <mat-tab *ngIf="registroPosi == 11">
+      <app-datoscontribuyente></app-datoscontribuyente>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 12">
+      <app-uifcontribuyente></app-uifcontribuyente>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 13">
+      <app-listrepresentantescontribuyente></app-listrepresentantescontribuyente>
+    </mat-tab>
+    <mat-tab *ngIf="registroPosi == 14">
+      <app-representantescontribuyente></app-representantescontribuyente>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,323 @@
+<div class="container">
+  <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div class="row">
+      <div class="col-12">
+        <mat-card class="box">
+          <table style="width: 100%">
+            <tr style="width: 100%">
+              <td style="width: 50%; text-align: left">
+                <button
+                  mat-icon-button
+                  class="cursor-pointer"
+                  aria-label="Retornar"
+                  (click)="return()"
+                >
+                  <mat-icon
+                    class="text-dark"
+                    style="font-size: 30px; color: black"
+                    >arrow_back</mat-icon
+                  >
+                </button>
+              </td>
+              <td style="width: 50%; text-align: right">
+                <button
+                  mat-icon-button
+                  class="cursor-pointer"
+                  aria-label="Volver al Inicio"
+                  (click)="onReset()"
+                >
+                  <mat-icon
+                    class="text-dark"
+                    style="font-size: 30px; color: black"
+                    >refresh</mat-icon
+                  >
+                </button>
+              </td>
+            </tr>
+          </table>
+          <hr />
+          <mat-card-header>
+            <mat-card-title>Datos del apoderado</mat-card-title>
+          </mat-card-header>
+          <form>
+            <mat-card-content>
+              <label id="example-radio-group-label"
+                >Documento de Identidad</label
+              >
+              <br />
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="
+                  logInComponent.datosApoderadoModuleSend.id_tipo_documento
+                "
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <mat-radio-button
+                  class="example-radio-button"
+                  *ngFor="let season of data_documento"
+                  [value]="season.id"
+                >
+                  {{ season.nombre }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+                *ngIf="
+                  logInComponent.datosApoderadoModuleSend.id_tipo_documento == 4
+                "
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.otro_documento
+                  "
+                  matInput
+                  placeholder="Tipo de Documento"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.num_documento
+                  "
+                  matInput
+                  placeholder="Número de Documento"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="logInComponent.datosApoderadoModuleSend.nombres"
+                  matInput
+                  placeholder="Nombres"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.apellidos
+                  "
+                  matInput
+                  placeholder="Apellidos"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <mat-select
+                  [formControl]="ubigeoCtrl"
+                  placeholder="Distrito"
+                  #singleSelect
+                >
+                  <mat-option>
+                    <ngx-mat-select-search
+                      [formControl]="ubigeoFilterCtrl"
+                    ></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option
+                    *ngFor="let bank of filteredUbigeo | async"
+                    [value]="bank"
+                  >
+                    {{ bank.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div
+                *ngIf="
+                  logInComponent.datosApoderadoModuleSend.id_ubigeo == null ||
+                  logInComponent.datosApoderadoModuleSend.id_ubigeo == 0
+                "
+              >
+                <div>
+                  <mat-error>
+                    <mat-error class="error-message"
+                      >Dato obligatorio</mat-error
+                    >
+                  </mat-error>
+                </div>
+              </div>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.domicilio
+                  "
+                  matInput
+                  placeholder="Domicilio"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.nacionalidad
+                  "
+                  matInput
+                  placeholder="Nacionalidad"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <mat-label>Fecha de Nacimiento</mat-label>
+                <input
+                  matInput
+                  type="date"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.fecha_nacimiento
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-control"
+                  id="txtvalor"
+                  ng-model="datos.Fecha"
+                  placeholder="Fecha"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <mat-label>Estado Civil</mat-label>
+                <mat-select
+                  placeholder="estadocivil"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.id_estado_civil
+                  "
+                  name="operacion"
+                >
+                  <mat-option
+                    *ngFor="let estadocivil of data_estadocivil"
+                    [value]="estadocivil.id"
+                  >
+                    {{ estadocivil.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.profesion
+                  "
+                  matInput
+                  placeholder="Profesión u ocupación"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.registro_poder
+                  "
+                  matInput
+                  placeholder="Registro de poder"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.datosApoderadoModuleSend.sede_registral
+                  "
+                  matInput
+                  placeholder="Sede Registral"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="logInComponent.datosApoderadoModuleSend.correo"
+                  matInput
+                  placeholder="Correo Electronico"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  type="number"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="logInComponent.datosApoderadoModuleSend.celular"
+                  matInput
+                  placeholder="Celular"
+                />
+              </mat-form-field>
+              <!--<mat-form-field class="example-full-width">
+                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="logInComponent.datosApoderadoModuleSend.conyugue_nombres" matInput
+                  placeholder="Nombre y Apellidos del cónyuge o conviviente">
+              </mat-form-field>-->
+            </mat-card-content>
+
+            <button
+              *ngIf="logInComponent.datosApoderadoModuleSend.id_ubigeo > 0"
+              mat-stroked-button
+              color="accent"
+              (click)="datosbien()"
+              class="btn-block"
+            >
+              Continuar >>
+            </button>
+          </form>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

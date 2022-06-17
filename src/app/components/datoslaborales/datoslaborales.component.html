@@ -1,0 +1,347 @@
+<div class="container">
+  <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <div class="row">
+      <div class="col-12">
+        <mat-card class="box">
+          <table style="width: 100%;">
+            <tr style="width: 100%;">
+              <td style="width: 50%; text-align: left;">
+                <button mat-icon-button class="cursor-pointer" aria-label="Retornar" (click)="return()">
+                  <mat-icon class="text-dark" style="font-size: 30px; color: black;">arrow_back</mat-icon>
+                </button>
+              </td>
+              <td style="width: 50%; text-align: right;">
+                <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                  <mat-icon class="text-dark" style="font-size: 30px; color: black;">refresh</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </table>
+          <hr>
+          <mat-card-header>
+            <mat-card-title>Datos Laborales</mat-card-title>
+          </mat-card-header>
+
+          <form>
+            <mat-card-content>
+
+              <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                <input [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="logInComponent.datosLaboralesModuleSend.profesion" matInput
+                  placeholder="Profesión u ocupación">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                <input [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="logInComponent.datosLaboralesModuleSend.centro_trabajo" matInput
+                  placeholder="Centro de Trabajo">
+              </mat-form-field>
+
+              <label id="example-radio-group-label">Desempeña o ha desempeñado un cargo o función pública en el Perú o en
+                el extranjero en los últimos cinco años</label> <br>
+              <mat-radio-group [(ngModel)]="logInComponent.datosLaboralesModuleSend.funcion_publica"
+                [ngModelOptions]="{standalone: true}" aria-labelledby="example-radio-group-label"
+                class="example-radio-group">
+                <mat-radio-button class="example-radio-button" *ngFor="let separacion of separacions"
+                  [value]="separacion.id">
+                  {{separacion.nombre}}
+                </mat-radio-button>
+              </mat-radio-group>
+
+              <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width"
+                *ngIf="logInComponent.datosLaboralesModuleSend.funcion_publica == 0">
+                <input [(ngModel)]="logInComponent.datosLaboralesModuleSend.cargo_publico"
+                  [ngModelOptions]="{standalone: true}" matInput placeholder="Cargo desempeñado">
+              </mat-form-field>
+
+
+              <label id="example-radio-group-label">Algún familiar o de su cónyuge hasta el segundo grado de
+                consanguinidad (Padres, abuelos, hermanos, hijos, nietos) desempeña o ha desempeñado un cargo o función
+                pública en el Perú o en otro país, en los últimos cinco años</label> <br>
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                [(ngModel)]="logInComponent.datosLaboralesModuleSend.familiar_cargo"
+                [ngModelOptions]="{standalone: true}">
+                <mat-radio-button class="example-radio-button" *ngFor="let separacion of separacions"
+                  [value]="separacion.id">
+                  {{separacion.nombre}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <div *ngIf="logInComponent.datosLaboralesModuleSend.familiar_cargo == 0">
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                  <input matInput [(ngModel)]="logInComponent.datosLaboralesModuleSend.familiar_nombres"
+                    [ngModelOptions]="{standalone: true}" placeholder="Nombre y Apellidos">
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                  <input matInput [(ngModel)]="logInComponent.datosLaboralesModuleSend.familiar_car"
+                    [ngModelOptions]="{standalone: true}" placeholder="Cargo">
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width">
+                  <mat-label>País</mat-label>
+                  <mat-select placeholder="pais" [(ngModel)]="logInComponent.datosLaboralesModuleSend.id_familiar_pais"
+                    name="operacion">
+                    <mat-option *ngFor="let pais of data_paises" [value]="pais.id">
+                      {{pais.nombre}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div><br>
+              <label id="example-radio-group-labelas">¿Es sujeto obligado informar a la UIF - Perú?</label> <br>
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                [(ngModel)]="logInComponent.datosLaboralesModuleSend.informar_uif" [ngModelOptions]="{standalone: true}">
+                <mat-radio-button class="example-radio-button" *ngFor="let separacion of separacions"
+                  [value]="separacion.id">
+                  {{separacion.nombre}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <br>
+
+              <label id="example-radio-group-label">Indique si designó a su Oficial de Cumplimiento</label> <br>
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                [(ngModel)]="logInComponent.datosLaboralesModuleSend.oficial_cumplimiento"
+                [ngModelOptions]="{standalone: true}">
+                <mat-radio-button class="example-radio-button" *ngFor="let separacion of separacions"
+                  [value]="separacion.id">
+                  {{separacion.nombre}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <br>
+              <label id="example-radio-group-labessl">El origen de los fondos, bienes u otros activos involucrados en
+                dicha transacción (específique)</label> <br>
+
+              <div *ngIf="movil">
+                <section class="example-section">
+                  <div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_haberes"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Haberes</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_prestamos_bancario"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Préstamo bancario</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_prestamos_familiares"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Préstamo familiar</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_herencia"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Herencia</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_venta_bien_inmieble"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Venta
+                        de bien Inmueble</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_venta_vehiculo"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Venta
+                        vehículo</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_rentas"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Rentas</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_comercio"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Comercio</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_donacion"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Donación</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_donacion_pago"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Dación en Pago</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_otros_describir"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Otros describir
+                      </mat-checkbox>
+                    </div>
+                  </div>
+
+                  <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width"
+                    *ngIf="logInComponent.datosLaboralesModuleSend.of_otros_describir == true">
+                    <input [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_otros_describir_text"
+                      [ngModelOptions]="{standalone: true}" matInput placeholder="Describir">
+                  </mat-form-field>
+                </section>
+                <br>
+                <label id="example-radio-group-label">Medio de pago utilizado:</label> <br>
+
+                <section class="example-section">
+                  <div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_efectivo"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Efectivo</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_cheque"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Cheque
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_deposito_cuenta"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Depósito en cuenta</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_transferencia_bancaria"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Transferencia bancaria
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_bien_inmueble"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Bien Inmueble</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_bien_mueble"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Bien Mueble</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_otros_describir"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Otros describir</mat-checkbox>
+                    </div>
+                  </div>
+                  <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width"
+                    *ngIf="logInComponent.datosLaboralesModuleSend.mp_otros_describir == true">
+                    <input [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_otros_describir_text"
+                      [ngModelOptions]="{standalone: true}" matInput placeholder="Describir">
+                  </mat-form-field>
+                </section>
+              </div>
+
+              <br>
+
+              <div *ngIf="!movil">
+                <section class="example-section">
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_haberes"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Haberes</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_prestamos_bancario"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Préstamo bancario</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_prestamos_familiares"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Préstamo familiar</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_herencia"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Herencia</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_venta_bien_inmieble"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Venta
+                        de bien Inmueble</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_venta_vehiculo"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Venta
+                        vehículo</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_rentas"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Rentas</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_comercio"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Comercio</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_donacion"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Donación</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_donacion_pago"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Dación en Pago</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_otros_describir"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Otros describir
+                      </mat-checkbox>
+                    </div>
+                  </div>
+
+                  <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width"
+                    *ngIf="logInComponent.datosLaboralesModuleSend.of_otros_describir == true">
+                    <input [(ngModel)]="logInComponent.datosLaboralesModuleSend.of_otros_describir_text"
+                      [ngModelOptions]="{standalone: true}" matInput placeholder="Describir">
+                  </mat-form-field>
+                </section><br>
+                <label id="example-radio-group-label">Medio de pago utilizado:</label> <br>
+                <br>
+                <section class="example-section">
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_efectivo"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Efectivo</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_cheque"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Cheque
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_deposito_cuenta"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Depósito en cuenta</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_transferencia_bancaria"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Transferencia bancaria
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_bien_inmueble"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Bien Inmueble</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_bien_mueble"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">
+                        Bien Mueble</mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <mat-checkbox [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_otros_describir"
+                        [ngModelOptions]="{standalone: true}" class="example-margin">Otros describir</mat-checkbox>
+                    </div>
+                  </div>
+                  <mat-form-field appearance="outline" style="height: 70px;" class="example-full-width"
+                    *ngIf="logInComponent.datosLaboralesModuleSend.mp_otros_describir == true">
+                    <input [(ngModel)]="logInComponent.datosLaboralesModuleSend.mp_otros_describir_text"
+                      [ngModelOptions]="{standalone: true}" matInput placeholder="Describir">
+                  </mat-form-field>
+                </section>
+              </div>
+              <br>
+
+              <button mat-stroked-button color="accent" (click)="datosapoderados()" class="btn-block">Continuar
+                >></button>
+
+            </mat-card-content>
+          </form>
+        </mat-card>
+
+      </div>
+    </div>
+  </div>
+</div>

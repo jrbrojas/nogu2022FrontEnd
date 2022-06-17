@@ -1,0 +1,404 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="box">
+        <table style="width: 100%">
+          <tr style="width: 100%">
+            <td style="width: 50%; text-align: left">
+              <button
+                mat-icon-button
+                class="cursor-pointer"
+                aria-label="Retornar"
+                (click)="return()"
+              >
+                <mat-icon
+                  class="text-dark"
+                  style="font-size: 30px; color: black"
+                  >arrow_back</mat-icon
+                >
+              </button>
+            </td>
+            <td style="width: 50%; text-align: right">
+              <button
+                mat-icon-button
+                class="cursor-pointer"
+                aria-label="Volver al Inicio"
+                (click)="onReset()"
+              >
+                <mat-icon
+                  class="text-dark"
+                  style="font-size: 30px; color: black"
+                  >refresh</mat-icon
+                >
+              </button>
+            </td>
+          </tr>
+        </table>
+        <hr />
+        <mat-card-header>
+          <mat-card-title>Datos del Representante</mat-card-title>
+        </mat-card-header>
+        <form>
+          <mat-card-content>
+            <label id="example-radio-group-label">Documento de Identidad</label>
+            <br />
+            <mat-radio-group
+              aria-labelledby="example-radio-group-label"
+              class="example-radio-group"
+              [(ngModel)]="logInComponent.contribuyenteModule.id_tipo_documento"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <mat-radio-button
+                class="example-radio-button"
+                *ngFor="let season of data_documento"
+                [value]="season.id"
+              >
+                {{ season.nombre }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+              *ngIf="logInComponent.contribuyenteModule.id_tipo_documento == 4"
+            >
+              <input
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="logInComponent.contribuyenteModule.otro_documento"
+                matInput
+                placeholder="Tipo de Documento"
+              />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <input
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="
+                  logInComponent.contribuyenteModule.numero_documento
+                "
+                placeholder="Número de Documento"
+              />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <input
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="logInComponent.contribuyenteModule.nombres"
+                placeholder="Nombres y Apellidos"
+              />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <mat-label>Fecha de Nacimiento</mat-label>
+              <input
+                matInput
+                type="date"
+                [(ngModel)]="
+                  logInComponent.contribuyenteModule.fecha_nacimiento
+                "
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control"
+                id="txtvalor"
+                ng-model="datos.Fecha"
+                placeholder="Fecha"
+              />
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <mat-label>Nacionalidad</mat-label>
+              <mat-select
+                placeholder="pais"
+                [(ngModel)]="
+                  logInComponent.contribuyenteModule.id_pais_nacionalidad
+                "
+                name="id_pais"
+              >
+                <mat-option *ngFor="let pais of data_paises" [value]="pais.id">
+                  {{ pais.nombre }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <mat-label>Estado Civil</mat-label>
+              <mat-select
+                placeholder="estadocivil"
+                [(ngModel)]="logInComponent.contribuyenteModule.id_estado_civil"
+                name="operacion"
+              >
+                <mat-option
+                  *ngFor="let estadocivil of data_estadocivil"
+                  [value]="estadocivil.id"
+                >
+                  {{ estadocivil.nombre }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div
+              style="background-color: azure; padding: 15px"
+              *ngIf="
+                logInComponent.contribuyenteModule.id_estado_civil == 2 ||
+                logInComponent.contribuyenteModule.id_estado_civil == 5
+              "
+            >
+              <hr style="background-color: green; height: 2px" />
+              <label
+                *ngIf="logInComponent.contribuyenteModule.id_estado_civil == 2"
+                id="example-radio-group-label"
+                >Separación de Patrimonios</label
+              >
+              <br />
+              <mat-radio-group
+                *ngIf="logInComponent.contribuyenteModule.id_estado_civil == 2"
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="
+                  logInComponent.contribuyenteModule.separa_patrimonio
+                "
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <mat-radio-button
+                  class="example-radio-button"
+                  *ngFor="let separacion of separacions"
+                  [value]="separacion.id"
+                >
+                  {{ separacion.nombre }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <h5
+                *ngIf="logInComponent.contribuyenteModule.id_estado_civil == 2"
+              >
+                Datos Cónyuge
+              </h5>
+              <h5
+                *ngIf="logInComponent.contribuyenteModule.id_estado_civil == 5"
+              >
+                Datos Conviviente
+              </h5>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  matInput
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.contribuyenteModule.nombre_conyugue
+                  "
+                  placeholder="Nombre y Apellidos"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <input
+                  matInput
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="
+                    logInComponent.contribuyenteModule.nombre_conyugue_documento
+                  "
+                  placeholder="DNI O C.E. N°"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+              >
+                <mat-label>Fecha de Nacimiento</mat-label>
+                <input
+                  matInput
+                  type="date"
+                  [(ngModel)]="
+                    logInComponent.contribuyenteModule.conyugue_fecha_nacimiento
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-control"
+                  id="txtvalor"
+                  ng-model="datos.Fecha"
+                  placeholder="Fecha"
+                />
+              </mat-form-field>
+
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+                *ngIf="
+                  logInComponent.contribuyenteModule.separa_patrimonio == 0
+                "
+              >
+                <input
+                  matInput
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="logInComponent.contribuyenteModule.partida"
+                  placeholder="Inscripción registral (Partida N°)"
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  logInComponent.contribuyenteModule.separa_patrimonio == 0
+                "
+              >
+                <div>
+                  <mat-error
+                    *ngIf="
+                      logInComponent.contribuyenteModule.partida == null ||
+                      logInComponent.contribuyenteModule.partida.length == 0
+                    "
+                  >
+                    <mat-error class="error-message"
+                      >Dato obligatorio</mat-error
+                    >
+                  </mat-error>
+                </div>
+              </div>
+              <mat-form-field
+                appearance="outline"
+                style="height: 70px"
+                class="example-full-width"
+                *ngIf="
+                  logInComponent.contribuyenteModule.separa_patrimonio == 0
+                "
+              >
+                <input
+                  matInput
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="logInComponent.contribuyenteModule.sede"
+                  placeholder="Sede (de inscripción)"
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  logInComponent.contribuyenteModule.separa_patrimonio == 0
+                "
+              >
+                <div>
+                  <mat-error
+                    *ngIf="
+                      logInComponent.contribuyenteModule.sede == null ||
+                      logInComponent.contribuyenteModule.sede.length == 0
+                    "
+                  >
+                    <mat-error class="error-message"
+                      >Dato obligatorio</mat-error
+                    >
+                  </mat-error>
+                </div>
+              </div>
+              <hr style="background-color: green; height: 2px" />
+            </div>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <input
+                matInput
+                [(ngModel)]="logInComponent.contribuyenteModule.domicilio"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Domicilio (lugar de residencia)"
+              />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <mat-select
+                [formControl]="ubigeoCtrl"
+                placeholder="Distrito"
+                #singleSelect
+              >
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="ubigeoFilterCtrl"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option
+                  *ngFor="let bank of filteredUbigeo | async"
+                  [value]="bank"
+                >
+                  {{ bank.nombre }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <input
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="
+                  logInComponent.contribuyenteModule.profecion_ocupacion
+                "
+                placeholder="Profeción u ocupación"
+              />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <input
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="logInComponent.contribuyenteModule.telefono"
+                placeholder="Teléfono"
+              />
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              class="example-full-width"
+            >
+              <input
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="
+                  logInComponent.contribuyenteModule.inscripcion_registral
+                "
+                placeholder="Inscripción registral"
+              />
+            </mat-form-field>
+          </mat-card-content>
+          <button
+            *ngIf="onValida()"
+            mat-stroked-button
+            color="accent"
+            (click)="guardar()"
+            class="btn-block"
+          >
+            Agregar >>
+          </button>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

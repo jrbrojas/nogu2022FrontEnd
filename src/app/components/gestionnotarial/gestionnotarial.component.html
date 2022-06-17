@@ -1,0 +1,31 @@
+
+<div class="row" style="width: 100%; height: 100%;">
+    <div style="width: 15%; background-color: #3f51b5; color: white;">
+        <div class="col-12" style="padding-top: 100%; height: 100%;">
+            <div style="height: 100px;"> 
+                <button mat-icon-button style="width: 100%;" (click)="opcionMenu(1)">
+                    <div style="height: 15px; width: 100%; text-align: center;">
+                        <mat-icon>assignment</mat-icon>
+                    </div>
+                    <div *ngIf="!movil">
+                        <label style="font-size: 12px; height: 10px;">Registros</label>
+                    </div>
+                </button>
+            </div>
+            <div style="height: 100px;"> 
+                <button mat-icon-button style="width: 100%;" (click)="opcionMenu(2)">
+                    <div style="height: 15px; width: 100%; text-align: center;">
+                        <mat-icon>assignment</mat-icon>
+                    </div>
+                    <div *ngIf="!movil">
+                        <label style="font-size: 12px; height: 10px;">KARDEX</label>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div style="width: 80%;">
+        <app-listaregistros *ngIf="tipoMenu == 1"></app-listaregistros>
+        <app-generarplantillas *ngIf="tipoMenu == 2"></app-generarplantillas>
+    </div>
+</div>

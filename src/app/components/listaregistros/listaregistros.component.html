@@ -1,0 +1,357 @@
+<div fxLayout="row" fxLayoutAlign="center center" style="margin: 100px">
+  <div class="row" style="width: 95%; margin: 10px">
+    <div class="col-12">
+      <mat-card class="box">
+        <form>
+          <div [hidden]="!movil">
+            <mat-form-field
+              appearance="outline"
+              style="height: 70px"
+              style="width: 100%"
+            >
+              <mat-label>Buscar Nombres ó Numero de Servicio</mat-label>
+              <input matInput (keyup)="applyFilter($event)" #input />
+            </mat-form-field>
+            <div class="row">
+              <div style="width: 50%">
+                <button
+                  style="height: 39px; width: 95%"
+                  (click)="onLoadData(10, 10, false)"
+                  mat-raised-button
+                  color="primary"
+                >
+                  Todos
+                </button>
+              </div>
+            </div>
+          </div>
+          <div [hidden]="movil">
+            <table style="width: 900px">
+              <tr>
+                <td style="width: 65%">
+                  <div style="width: 90%">
+                    <!--<mat-form-field
+                      appearance="outline"
+                      style="height: 70px"
+                      style="width: 100%"
+                    >
+                      <mat-label>Buscar Nombres ó Numero de Servicio</mat-label>
+                      <input
+                        matInput
+                        [(ngModel)]="nombre"
+                        (keyup)="onLoadData()"
+                        #input
+                      />
+                    </mat-form-field>-->
+
+                    <mat-form-field
+                      appearance="outline"
+                      style="height: 70px"
+                      style="width: 100%"
+                    >
+                      <input
+                        matInput
+                        [ngModelOptions]="{ standalone: true }"
+                        [(ngModel)]="nombre"
+                        (keyup)="onLoadData(10, 10, false)"
+                        placeholder="Buscar Nombres ó Numero de Servicio"
+                      />
+                    </mat-form-field>
+                  </div>
+                </td>
+                <!--<td style="width: 5%">
+                  <div style="width: 80%">
+                    <button
+                      style="height: 39px"
+                      (click)="loadRow()"
+                      mat-raised-button
+                      color="primary"
+                    >
+                      Todos
+                    </button>
+                  </div>
+                </td>-->
+              </tr>
+            </table>
+          </div>
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef style="width: 15%">#</th>
+              <td mat-cell *matCellDef="let element">
+                <label style="font-size: 13px; font-weight: bold">
+                  {{ element.numero_servicio }}
+                </label>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="movil" matColumnDef="created_at">
+              <th mat-header-cell *matHeaderCellDef>Registro</th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  <div mat-dialog-content>
+                    <div class="col-md-12">
+                      <div class="alert alert-secondary" role="alert">
+                        <label style="font-size: 11px">
+                          <strong>{{ element.created_at }}</strong> </label
+                        ><br />
+                        <hr />
+                        <label style="font-size: 11px">
+                          {{ element.nombre }} </label
+                        ><br />
+                        <label style="font-size: 11px">
+                          {{
+                            element.tipo_opcion == 1
+                              ? "Titular"
+                              : element.tipo_opcion == 2
+                              ? "Apoderado"
+                              : "-"
+                          }} </label
+                        ><br />
+                        <span *ngIf="element.tipo_persona == 1">
+                          <label
+                            style="font-size: 11px"
+                            id="example-radio-group-labels"
+                            >Jurídica</label
+                          >
+                        </span>
+                        <span *ngIf="element.tipo_persona == 2">
+                          <label
+                            style="font-size: 11px"
+                            id="example-radio-group-labels"
+                            >Natural</label
+                          >
+                        </span>
+                        <label
+                          *ngIf="element.tipo_tramite == 2"
+                          style="font-size: 11px"
+                        >
+                          {{
+                            element.tipo_condicion == 1
+                              ? "Transferente"
+                              : element.tipo_condicion == 2
+                              ? "Adquiriente"
+                              : "-"
+                          }} </label
+                        ><br />
+                      </div>
+                    </div>
+                  </div>
+                  <div mat-dialog-content>
+                    <div class="col-md-12">
+                      <div
+                        *ngIf="element.tipo_tramite == 1"
+                        class="alert alert-success"
+                        role="alert"
+                      >
+                        <strong> EP </strong>
+                      </div>
+                      <div
+                        *ngIf="element.tipo_tramite == 2"
+                        class="alert alert-warning"
+                        role="alert"
+                      >
+                        <strong> TV </strong>
+                      </div>
+                      <div
+                        *ngIf="element.tipo_tramite == 3"
+                        class="alert alert-primary"
+                        role="alert"
+                      >
+                        <strong> PNC </strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="float: right">
+                  <div>
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      (click)="onGenerar(element, false)"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      (click)="onGenerar(element, true)"
+                    >
+                      <mat-icon>picture_as_pdf</mat-icon>
+                    </button>
+                    <button
+                      *ngIf="funciones.isAdministrador()"
+                      mat-icon-button
+                      color="primary"
+                      (click)="onDelete(element)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="!movil" matColumnDef="created_at">
+              <th mat-header-cell *matHeaderCellDef style="width: 20%">
+                Fecha
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.created_at }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef style="width: 25%">
+                Nombre
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.nombre | uppercase }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="tipo_opcion">
+              <th mat-header-cell *matHeaderCellDef style="width: 20%">
+                Opción
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                  element.tipo_opcion == 1
+                    ? "Titular"
+                    : element.tipo_opcion == 2
+                    ? "Apoderado"
+                    : "-"
+                }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="tipo_persona">
+              <th mat-header-cell *matHeaderCellDef style="width: 35%">
+                Tipo Persona
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.tipo_persona == 1">
+                  <label id="example-radio-group-labels">Jurídica</label>
+                </span>
+                <span *ngIf="element.tipo_persona == 2">
+                  <label id="example-radio-group-labels">Natural</label>
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="tipo_tramite">
+              <th mat-header-cell *matHeaderCellDef style="width: 32%">
+                Tramite
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div mat-dialog-content style="width: 100%">
+                  <div class="col-md-12" style="width: 100%">
+                    <div
+                      *ngIf="element.tipo_tramite == 1"
+                      class="alert alert-success"
+                      role="alert"
+                      style="width: 100%"
+                    >
+                      <strong> EP </strong>
+                    </div>
+                    <div
+                      *ngIf="element.tipo_tramite == 2"
+                      class="alert alert-warning"
+                      role="alert"
+                      style="width: 100%"
+                    >
+                      <strong> TV </strong>
+                    </div>
+                    <div
+                      *ngIf="element.tipo_tramite == 3"
+                      class="alert alert-primary"
+                      role="alert"
+                      style="width: 100%"
+                    >
+                      <strong> PNC </strong>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="tipo_condicion">
+              <th mat-header-cell *matHeaderCellDef style="width: 40%">
+                Condición
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.tipo_tramite == 2">
+                  {{
+                    element.tipo_condicion == 1
+                      ? "Transferente"
+                      : element.tipo_condicion == 2
+                      ? "Adquiriente"
+                      : "-"
+                  }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="numero_servicio">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%"></th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onGenerar(element, false)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%"></th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="onGenerar(element, true)"
+                >
+                  <mat-icon>picture_as_pdf</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%"></th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  *ngIf="funciones.isAdministrador()"
+                  mat-icon-button
+                  color="primary"
+                  (click)="onDelete(element)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="
+                movil == true ? displayedColumnsMovil : displayedColumns
+              "
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="
+                let row;
+                columns: movil == true
+                  ? displayedColumnsMovil
+                  : displayedColumns
+              "
+            ></tr>
+          </table>
+
+          <mat-paginator
+            #paginator
+            [length]="resultsLength"
+            [pageSizeOptions]="[10]"
+          >
+          </mat-paginator>
+          <!--<mat-paginator #paginatorRegistros  [length]="1500" class="mat-paginator-sticky"
+            
+            [pageIndex]="pageNumber"
+            [pageSize]="pageSize"
+                        [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            (page)="loadRow()" showFirstLastButtons>
+                    </mat-paginator>-->
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>
