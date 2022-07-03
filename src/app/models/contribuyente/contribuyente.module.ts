@@ -31,4 +31,5 @@ export class ContribuyenteModule {
   conyugue_fecha_nacimiento: string = "";
   ////////////////
   numero_servicio: number = 0;
+  biEdit: boolean = false;
 }

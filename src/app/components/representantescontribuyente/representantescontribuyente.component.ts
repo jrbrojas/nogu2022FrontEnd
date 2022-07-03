@@ -135,22 +135,28 @@ export class RepresentantescontribuyenteComponent implements  AfterViewInit, OnD
     this.logInComponent.contribuyenteModule.profecion_ocupacion = this.logInComponent.contribuyenteModule.profecion_ocupacion.toUpperCase();
     this.logInComponent.contribuyenteModule.inscripcion_registral = this.logInComponent.contribuyenteModule.inscripcion_registral.toUpperCase();
     this.logInComponent.contribuyenteModule.telefono = this.logInComponent.contribuyenteModule.telefono.toUpperCase();
-    this.logInComponent.contribuyenteModule.telefono_dos = this.logInComponent.contribuyenteModule.telefono_dos.toUpperCase();
+    this.logInComponent.contribuyenteModule.telefono_dos = (this.logInComponent.contribuyenteModule.telefono_dos == undefined ? '' : this.logInComponent.contribuyenteModule.telefono_dos.toUpperCase());
     this.logInComponent.contribuyenteModule.id_distrito = this.logInComponent.contribuyenteModule.id_distrito;
-    this.logInComponent.contribuyenteModuleArr.push(this.logInComponent.contribuyenteModule);
-    this.logInComponent.contribuyenteModule = new ContribuyenteModule();
+    if (!this.logInComponent.contribuyenteModule.biEdit) {
+      this.logInComponent.contribuyenteModuleArr.push(this.logInComponent.contribuyenteModule);
+      this.logInComponent.contribuyenteModule = new ContribuyenteModule();
+    }
     //this._router.navigate(['/lcontribuyente']);
     this.logInComponent.registroPosi = 13;
   }
 
   onValida(): boolean {
-    if (this.logInComponent.contribuyenteModule.id_estado_civil === 2 || this.logInComponent.contribuyenteModule.id_estado_civil === 5) {
+    if (this.logInComponent.contribuyenteModule.numero_documento.length === 0) return false;
+    if (this.logInComponent.contribuyenteModule.nombres.length === 0) return false;
+    if (this.logInComponent.contribuyenteModule.id_estado_civil === 0) return false;
+    if (this.logInComponent.contribuyenteModule.id_distrito === 0) return false;
+    /*if (this.logInComponent.contribuyenteModule.id_estado_civil === 2 || this.logInComponent.contribuyenteModule.id_estado_civil === 5) {
       if (this.logInComponent.contribuyenteModule.partida.length === 0) return false;
       if (this.logInComponent.contribuyenteModule.sede.length === 0) return false;
       if (this.logInComponent.contribuyenteModule.nombre_conyugue.length === 0) return false;
       if (this.logInComponent.contribuyenteModule.nombre_conyugue_documento.length === 0) return false;
       if (this.logInComponent.contribuyenteModule.conyugue_fecha_nacimiento.length === 0) return false;
-    }
+    }*/
     return true;
   }
 }

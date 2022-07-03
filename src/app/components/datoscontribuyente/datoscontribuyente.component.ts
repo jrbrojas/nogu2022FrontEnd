@@ -162,13 +162,13 @@ export class DatoscontribuyenteComponent implements AfterViewInit, OnDestroy {
             var entidad_uif = dataTemmp.resp_select_datos_entidad_uif;
             var bien = dataTemmp.resp_select_bien;
             var contribuyentes = dataTemmp.resp_select_contribuyentes;
-            if (contribuyentes.length > 0) {
+            if (contribuyentes != null && contribuyentes.length > 0) {
               for (let index = 0; index < contribuyentes.length; index++) {
                 if (contribuyentes[index].fecha_nacimiento != null && contribuyentes[index].fecha_nacimiento != '') {
                   contribuyentes[index].fecha_nacimiento = contribuyentes[index].fecha_nacimiento.substr(0, 10);
                 }
               }
-            }
+            } else { contribuyentes = []; }
             localStorage.setItem('windows', '0');
 
             if (entidad == undefined || entidad == null || entidad.length == 0) {

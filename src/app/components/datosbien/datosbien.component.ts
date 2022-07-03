@@ -75,6 +75,9 @@ export class DatosbienComponent implements OnInit {
 
   datosfinales() {
     //this._router.navigate(['/jurado']);
+    if (this.logInComponent.datosBienModuleSend.modelo == null) {
+      this.logInComponent.datosBienModuleSend.modelo = '';
+    }
     this.logInComponent.registroPosi = 8;
   }
 

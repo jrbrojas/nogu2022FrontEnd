@@ -227,7 +227,7 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
                   } else {
                     this.logInComponent.contribuyenteModuleArr = [];
                   }
-                }
+                } else { contribuyentes = []; }
                 if (entidad == null) {
                   entidad = new DatosEntityModule();
                 } else {

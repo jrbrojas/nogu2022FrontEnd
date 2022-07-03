@@ -138,6 +138,15 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+              
+              <mat-error
+                *ngIf="
+                  logInComponent.datosEntityModuleSend.id_distrito == null ||
+                  logInComponent.datosEntityModuleSend.id_distrito == 0
+                "
+              >
+                <mat-error class="error-message">Dato obligatorio</mat-error>
+              </mat-error>
               <mat-form-field
                 appearance="outline"
                 style="height: 70px"
@@ -484,6 +493,7 @@
               *ngIf="
                 logInComponent.datosEntityModuleSend.razonsocial != null &&
                 logInComponent.datosEntityModuleSend.ruc != null &&
+                logInComponent.datosEntityModuleSend.id_distrito > 0 &&
                 logInComponent.datosEntityModuleSend.ruc.length > 0 &&
                 logInComponent.datosEntityModuleSend.razonsocial.length > 0
               "

@@ -263,14 +263,16 @@ export class Funciones {
             enteros: Math.floor(num),
             centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
             letrasCentavos: '',
-            letrasMonedaPlural: 'Y 00/100',
-            letrasMonedaSingular: 'Y 00/100',
+            letrasMonedaPlural: 'Y ' + (((Math.round(num * 100)) - (Math.floor(num) * 100))).toString().padStart(2, '0') + '/100',
+            letrasMonedaSingular: 'Y ' + (((Math.round(num * 100)) - (Math.floor(num) * 100))).toString().padStart(2, '0') + '/100',
+            /*letrasMonedaPlural: 'Y 00/100',
+            letrasMonedaSingular: 'Y 00/100',*/
             letrasMonedaCentavoPlural: '', //'centimos',
             letrasMonedaCentavoSingular: '' //'centimo'
         };
 
         if (data.centavos > 0) {
-            data.letrasCentavos = 'CON ' + ((data.centavos == 1) ? (this.Millones(data.centavos) + ' ' + data.letrasMonedaCentavoSingular) : (this.Millones(data.centavos) + ' ' + data.letrasMonedaCentavoPlural));
+            data.letrasCentavos = ''; //'CON ' + ((data.centavos == 1) ? (this.Millones(data.centavos) + ' ' + data.letrasMonedaCentavoSingular) : (this.Millones(data.centavos) + ' ' + data.letrasMonedaCentavoPlural));
         };
 
         if (data.enteros == 0)

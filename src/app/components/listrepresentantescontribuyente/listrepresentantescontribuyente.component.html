@@ -20,7 +20,7 @@
                     </table>
                     <hr>
                     <mat-card-header>
-                        <mat-card-title>Representantes </mat-card-title>
+                        <mat-card-title>Representantes Legales</mat-card-title>
                     </mat-card-header>
                     <form>
                         <mat-card-content>
@@ -34,15 +34,26 @@
                             <br>
                             <br>
                             <div style="width: 100%;padding: 8px 8px 8px 8px;height: 500px;">
-                                <table style="width: 100%;" mat-table [dataSource]="dataSource">
+                                <table style="width: 100%;" mat-table [dataSource]="dataSourceTemp">
+                                    <ng-container matColumnDef="documento">
+                                        <th mat-header-cell *matHeaderCellDef style="width: 20%;"> N° Documento </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.numero_documento}} </td>
+                                    </ng-container>
                                     <ng-container matColumnDef="nombre">
-                                        <th mat-header-cell *matHeaderCellDef style="width: 80%;"> Nombre </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.nombre | uppercase}} </td>
+                                        <th mat-header-cell *matHeaderCellDef style="width: 70%;"> Nombre </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nombres | uppercase}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="editar">
+                                        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Editar </th>
+                                        <td mat-cell *matCellDef="let element; let i = index;"> <button mat-icon-button
+                                                (click)="onEditar(element, i)">
+                                                <mat-icon>edit</mat-icon>
+                                            </button> </td>
                                     </ng-container>
                                     <ng-container matColumnDef="eliminar">
-                                        <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Eliminar </th>
-                                        <td mat-cell *matCellDef="let element"> <button mat-icon-button
-                                                (click)="onEliminar(element, element.eliminar)">
+                                        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Eliminar </th>
+                                        <td mat-cell *matCellDef="let element; let i = index;"> <button mat-icon-button
+                                                (click)="onEliminar(element, i)">
                                                 <mat-icon>delete</mat-icon>
                                             </button> </td>
                                     </ng-container>

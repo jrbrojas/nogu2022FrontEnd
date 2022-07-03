@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormularioService } from '../../services/formulario.service';
 import { LogInComponent } from '../log-in/log-in.component';
 import { Funciones } from '../../funciones/funciones';
+import { ContribuyenteModule } from '../../models/contribuyente/contribuyente.module';
 
 @Component({
   selector: 'app-listrepresentantescontribuyente',
@@ -15,14 +16,19 @@ export class ListrepresentantescontribuyenteComponent implements OnInit {
   dataSource: any = [];
   dataSourceTemp: any = [];
   dataSourceTemp1: any = [];
-  displayedColumns = ['nombre', 'eliminar'];
+  displayedColumns = ['documento', 'nombre', 'editar', 'eliminar'];
   constructor(private _router: Router, private funciones: Funciones, private formularioService: FormularioService, public logInComponent: LogInComponent) {
     window.scrollTo(0, 0);
     this.formularioService.verifyItemStatus();
     if (this.logInComponent.contribuyenteModuleArr != null && this.logInComponent.contribuyenteModuleArr.length > 0) {
       this.dataSourceTemp = this.logInComponent.contribuyenteModuleArr;
       for (let index = 0; index < this.dataSourceTemp.length; index++) {
-        this.dataSource.push({ 'id': this.dataSourceTemp[index].id, 'nombre': this.dataSourceTemp[index].nombres, 'eliminar': index });
+        this.dataSource.push({ 
+          'id': this.dataSourceTemp[index].id, 
+          'documento': this.dataSourceTemp[index].numero_documento, 
+          'nombre': this.dataSourceTemp[index].nombres, 
+          'eliminar': index 
+        });
       }
     }
   }
@@ -32,6 +38,8 @@ export class ListrepresentantescontribuyenteComponent implements OnInit {
 
   onAgregar() {
     //this._router.navigate(['/ncontribuyente']);
+    this.logInComponent.contribuyenteModule = new ContribuyenteModule();
+    this.logInComponent.contribuyenteModule.biEdit = false;
     this.logInComponent.registroPosi = 14;
   }
 
@@ -41,6 +49,12 @@ export class ListrepresentantescontribuyenteComponent implements OnInit {
 
   return() {
     this.logInComponent.registroPosi = 12;
+  }
+
+  onEditar(element: ContribuyenteModule, item: number) {
+    this.logInComponent.contribuyenteModule = element;
+    this.logInComponent.contribuyenteModule.biEdit = true;
+    this.logInComponent.registroPosi = 14;
   }
 
   onEliminar(element: any, item: number) {
@@ -55,7 +69,11 @@ export class ListrepresentantescontribuyenteComponent implements OnInit {
               this.dataSourceTemp1 = [];
               for (let index = 0; index < this.dataSourceTemp.length; index++) {
                 if (index != item) {
-                  this.dataSource.push({ 'nombre': this.dataSourceTemp[index].nombres, 'eliminar': index });
+                  this.dataSource.push({ 
+                    'nombre': this.dataSourceTemp[index].nombres, 
+                    'documento': this.dataSourceTemp[index].numero_documento, 
+                    'eliminar': index 
+                  });
                   this.dataSourceTemp1.push(this.dataSourceTemp[index]);
                 }
               }

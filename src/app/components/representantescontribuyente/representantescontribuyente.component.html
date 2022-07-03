@@ -36,7 +36,7 @@
         </table>
         <hr />
         <mat-card-header>
-          <mat-card-title>Datos del Representante</mat-card-title>
+          <mat-card-title><strong *ngIf="logInComponent.contribuyenteModule.biEdit">Editar </strong>Datos del Representante Legal</mat-card-title>
         </mat-card-header>
         <form>
           <mat-card-content>
@@ -83,6 +83,17 @@
                 placeholder="Número de Documento"
               />
             </mat-form-field>
+            <mat-error
+              *ngIf="
+                logInComponent.contribuyenteModule.numero_documento == null ||
+                logInComponent.contribuyenteModule.numero_documento.length == 0
+              "
+            >
+              <mat-error class="error-message"
+                >Dato obligatorio (Tal cual el documento de
+                identidad)</mat-error
+              >
+            </mat-error>
             <mat-form-field
               appearance="outline"
               style="height: 70px"
@@ -95,6 +106,16 @@
                 placeholder="Nombres y Apellidos"
               />
             </mat-form-field>
+            <mat-error
+              *ngIf="
+                logInComponent.contribuyenteModule.nombres == null ||
+                logInComponent.contribuyenteModule.nombres.length == 0
+              "
+            >
+              <mat-error class="error-message"
+                >Dato obligatorio</mat-error
+              >
+            </mat-error>
             <mat-form-field
               appearance="outline"
               style="height: 70px"
@@ -152,7 +173,17 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <div
+            <mat-error
+              *ngIf="
+                logInComponent.contribuyenteModule.id_estado_civil == null ||
+                logInComponent.contribuyenteModule.id_estado_civil == 0
+              "
+            >
+              <mat-error class="error-message"
+                >Dato obligatorio</mat-error
+              >
+            </mat-error>
+            <!--<div
               style="background-color: azure; padding: 15px"
               *ngIf="
                 logInComponent.contribuyenteModule.id_estado_civil == 2 ||
@@ -311,7 +342,7 @@
                 </div>
               </div>
               <hr style="background-color: green; height: 2px" />
-            </div>
+            </div>-->
             <mat-form-field
               appearance="outline"
               style="height: 70px"
@@ -347,6 +378,16 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
+            <mat-error
+              *ngIf="
+                logInComponent.contribuyenteModule.id_distrito == null ||
+                logInComponent.contribuyenteModule.id_distrito == 0
+              "
+            >
+              <mat-error class="error-message"
+                >Dato obligatorio</mat-error
+              >
+            </mat-error>
             <mat-form-field
               appearance="outline"
               style="height: 70px"
@@ -395,7 +436,8 @@
             (click)="guardar()"
             class="btn-block"
           >
-            Agregar >>
+          <strong *ngIf="logInComponent.contribuyenteModule.biEdit">Actualizar </strong>
+          <strong *ngIf="!logInComponent.contribuyenteModule.biEdit">Agregar >> </strong>
           </button>
         </form>
       </mat-card>
