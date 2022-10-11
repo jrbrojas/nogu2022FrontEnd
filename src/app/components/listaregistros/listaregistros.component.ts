@@ -15,7 +15,6 @@ import { LogInComponent } from '../log-in/log-in.component';
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import pdfMake from 'pdfmake/build/pdfmake';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import Swal from 'sweetalert2';
 
 export interface PeriodicElement {
   name: string;

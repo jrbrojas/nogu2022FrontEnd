@@ -210,13 +210,7 @@
                 Opción
               </th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.tipo_opcion == 1
-                    ? "Titular"
-                    : element.tipo_opcion == 2
-                    ? "Apoderado"
-                    : "-"
-                }}
+                {{ element.tipo_opcion == 1 ? "Titular" : element.tipo_opcion == 2 ? "Apoderado" : "-" }}
               </td>
             </ng-container>
             <ng-container matColumnDef="tipo_persona">

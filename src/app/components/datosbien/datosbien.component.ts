@@ -81,6 +81,17 @@ export class DatosbienComponent implements OnInit {
     this.logInComponent.registroPosi = 8;
   }
 
+  isTokenLogin(): boolean {
+    var token = localStorage.getItem('token');
+    if (token == undefined || token == null || token == '') return false;
+    return true;
+  }
+
+  validaMostrarInformacionPersonalInput(): boolean {
+    if (this.logInComponent.biDocumentoEncontrado && !this.isTokenLogin()) return false;
+    return true;
+  }
+
   return() {
     if (this.logInComponent.datosTamiteOpcionesModuleSend.tipo_persona == 1) {
       this.logInComponent.registroPosi = 13;

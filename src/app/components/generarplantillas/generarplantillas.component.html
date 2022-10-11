@@ -35,24 +35,39 @@
                             </tr>
                         </thead>
                         <tbody class="table-body">
-                            <tr *ngIf="dataSourceRows.length === 0"><td><span class="col-12 sin-resultados">No se encontarón resultados</span></td></tr>
-                            <tr *ngFor="let item of dataSourceRows; let i = index;">
-                                <td class="text-center">{{ i + 1 }}</td>
-                                <td>{{item.fecha | date: 'dd/MM/yyyy'}}</td>
-                                <td>{{item.vcplaca}}</td>
+                            <tr *ngIf="kardexPlaca != null">
+                                <td class="text-center">{{ 1 }}</td>
+                                <td>{{kardexPlaca.opciones_created_at | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{kardexPlaca.bien_num_placa}}</td>
                                 <td>
                                     <span><strong>{{srtTipo1()}}</strong></span>
-                                    <div *ngFor="let transferente of item.transferenteJson">
-                                        <mat-checkbox [(ngModel)]="transferente.biActivo">{{transferente.fecha | date: 'dd/MM/yyyy'}} | {{transferente.vcDocumento}} | {{transferente.vcNombre}}</mat-checkbox>
+                                    <div *ngFor="let transferente of kardexPlaca.transferenteJson">
+                                        <mat-checkbox [(ngModel)]="transferente.biActivo">
+                                            <span *ngIf="transferente.opciones_tipo_persona_natural">
+                                                <span *ngIf="!transferente.apoderado">{{transferente.opciones_created_at | date: 'dd/MM/yyyy'}} | {{transferente.basicos_num_documento}} | {{transferente.basicos_nombres}} {{transferente.basicos_apellidos}}</span>
+                                                <span *ngIf="transferente.apoderado">{{transferente.opciones_created_at | date: 'dd/MM/yyyy'}} | {{transferente.apoderado_num_documento}} | {{transferente.apoderado_nombres}} {{transferente.apoderado_apellidos}}</span>
+                                            </span>
+                                            <span *ngIf="transferente.opciones_tipo_persona_juridica">
+                                                <span>{{transferente.opciones_created_at | date: 'dd/MM/yyyy'}} | {{transferente.representantes_numero_documento}} | {{transferente.representantes_nombres}}</span>
+                                            </span>
+                                        </mat-checkbox>
                                     </div>
                                     <hr>
                                     <span><strong>{{srtTipo2()}}</strong></span>
-                                    <div *ngFor="let adquiriente of item.adquirienteJson">
-                                        <mat-checkbox [(ngModel)]="adquiriente.biActivo">{{adquiriente.fecha | date: 'dd/MM/yyyy'}} | {{adquiriente.vcDocumento}} | {{adquiriente.vcNombre}}</mat-checkbox>
+                                    <div *ngFor="let adquiriente of kardexPlaca.adquirienteJson">
+                                        <mat-checkbox [(ngModel)]="adquiriente.biActivo">
+                                            <span *ngIf="adquiriente.opciones_tipo_persona_natural">
+                                                <span *ngIf="!adquiriente.apoderado">{{adquiriente.opciones_created_at | date: 'dd/MM/yyyy'}} | {{adquiriente.basicos_num_documento}} | {{adquiriente.basicos_nombres}} {{adquiriente.basicos_apellidos}}</span>
+                                                <span *ngIf="adquiriente.apoderado">{{adquiriente.opciones_created_at | date: 'dd/MM/yyyy'}} | {{adquiriente.apoderado_num_documento}} | {{adquiriente.apoderado_nombres}} {{adquiriente.apoderado_apellidos}}</span>
+                                            </span>
+                                            <span *ngIf="adquiriente.opciones_tipo_persona_juridica">
+                                                <span>{{adquiriente.opciones_created_at | date: 'dd/MM/yyyy'}} | {{adquiriente.representantes_numero_documento}} | {{adquiriente.representantes_nombres}}</span>
+                                            </span>
+                                        </mat-checkbox>
                                     </div>
                                 </td>
                                 <td>
-                                    <a style="padding: 5px;" class="pointer" (click)="onGenerar(item)" title="Descargar Plantilla WORD">
+                                    <a style="padding: 5px;" class="pointer" (click)="onGenerar(kardexPlaca)" title="Descargar Plantilla WORD">
                                         <img src="assets/word.ico" width="30px;" height="30px">
                                     </a>
                                 </td>
@@ -61,7 +76,7 @@
                                         <div class="input-group-prepend">
                                           <span class="input-group-text" id="basic-addon1">#</span>
                                         </div>
-                                        <input type="text" class="form-control" [(ngModel)]="item.kardex_numero" placeholder="Numero de Kardex">
+                                        <input type="text" class="form-control" [(ngModel)]="kardexPlaca.kardex_numero" placeholder="Numero de Kardex">
                                       </div>
                                     <div class="input-group mb-3">
                                         <div class="custom-file">
@@ -70,7 +85,7 @@
                                           <label class="custom-file-label" for="inputGroupFile01">{{kardex_reg.archivo_name}}</label>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-success col-lg-12" (click)="onSave(item)">Generar</button>
+                                    <button type="button" class="btn btn-success col-lg-12" (click)="onSave(kardexPlaca)">Generar</button>
                                 </td>
                                 <td>
                                 </td>
@@ -187,7 +202,44 @@
 
 
 
+<script src="node_modules/docxtemplater/build/docxtemplater.js"></script>
+    <script src="node_modules/pizzip/dist/pizzip.js"></script>
+    <script src="node_modules/pizzip/vendor/FileSaver.js"></script>
+    <script src="node_modules/pizzip/dist/pizzip-utils.js"></script>
+    <script src="build/html-module.js"></script>
+    <script>
+        function generarDocx() {
+            let url = environment.plantilla1;
+            if (this.inTipo === 2)
+            url = environment.plantilla2;
+            else if (this.inTipo === 3)
+            url = environment.plantilla3;
+            this.funciones.showLoading();
+            PizZipUtils.getBinaryContent(url,
+                function (error, content) {
+                    if (error) {
+                        console.error(error);
+                        return;
+                    }
 
+                    var zip = new PizZip(content);
+                    var doc = new docxtemplater(zip, {
+                        modules: [new DocxtemplaterHtmlModule({})],
+                    });
+
+                    doc.render({
+                        html: "<p>Hello <b>John</b></p>",
+                    });
+                    var out = doc.getZip().generate({
+                        type: "blob",
+                        mimeType:
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    });
+                    saveAs(out, "generated.docx");
+                }
+            )
+        }
+    </script>
 
 
 

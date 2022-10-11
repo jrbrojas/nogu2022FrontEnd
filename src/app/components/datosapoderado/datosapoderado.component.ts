@@ -29,7 +29,6 @@ export class DatosapoderadoComponent implements AfterViewInit, OnInit {
   datosApoderadoModule: DatosApoderadoModule = new DatosApoderadoModule();
 
   constructor(
-    private _router: Router,
     private mantenimientoService: MantenimientoService,
     public logInComponent: LogInComponent,
     private formularioService: FormularioService) {
@@ -106,6 +105,57 @@ export class DatosapoderadoComponent implements AfterViewInit, OnInit {
       .subscribe(() => {
         this.singleSelectUbigeo.compareWith = (a: any, b: any) => a && b && a.id === b.id;
       });
+  }
+
+  async onBucarInformacion() {
+    debugger;
+    if (this.logInComponent.datosApoderadoModuleSend.num_documento != undefined && this.logInComponent.datosApoderadoModuleSend.num_documento != null && this.logInComponent.datosApoderadoModuleSend.num_documento != '' && this.logInComponent.datosApoderadoModuleSend.num_documento.length > 0) {
+      this.logInComponent.NDocumento = this.logInComponent.datosApoderadoModuleSend.num_documento;
+      this.logInComponent.funciones.showLoading();
+      this.logInComponent.formularioService.verifyItemStatus();
+      var data = {
+        'tipoQuery': false,
+        'numeroDocumento': this.logInComponent.NDocumento,
+        'tipo': this.logInComponent.opciones.tipo_persona,
+        'tipo_busqueda': 2
+      };
+      await this.logInComponent.mantenimientoService.postFillDocumento(data).subscribe(
+        data => {
+          this.logInComponent.funciones.showLoading();
+          if (data['statuscode'] == 200) {
+            var dataTemmp = data['data'];
+            if (dataTemmp.resp_apoderado != null) {
+              this.logInComponent.funciones.hideLoading();
+              var msn = data['mensaje'].split('|');
+              this.logInComponent.funciones.mensajeConfirmar('Se encontró datos registrados previamente', '¿Desea cargar los datos?', () => {
+                this.logInComponent.documento = 0;
+                this.logInComponent.funciones.mensajeOk(msn[1], msn[0]);
+                this.logInComponent.funciones.hideLoading();
+                  var apoderado = dataTemmp.resp_apoderado;
+                  
+                  if (apoderado == null ) {
+                    apoderado = new DatosApoderadoModule();
+                  } else {
+                    if (apoderado.fecha_nacimiento != null && apoderado.fecha_nacimiento != '') {
+                      apoderado.fecha_nacimiento = this.logInComponent.formato_fecha(apoderado.fecha_nacimiento);
+                    }
+                    this.logInComponent.datosApoderadoModuleSend = apoderado;
+                  }
+              });
+            } else {
+              this.logInComponent.funciones.hideLoading();
+            }
+          } else {
+            this.logInComponent.funciones.hideLoading();
+            //this.logInComponent.funciones.mensajeError(msn[1], msn[0]);
+          }
+        },
+        error => {
+          this.logInComponent.funciones.hideLoading();
+          //this.funciones.mensajeError("", "No se encontraron datos");
+        }
+      )
+    }
   }
 
   ngOnInit() {

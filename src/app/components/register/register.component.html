@@ -6,17 +6,8 @@
           <table style="width: 100%">
             <tr style="width: 100%">
               <td style="width: 100%; text-align: right">
-                <button
-                  mat-icon-button
-                  class="cursor-pointer"
-                  aria-label="Volver al Inicio"
-                  (click)="onReset()"
-                >
-                  <mat-icon
-                    class="text-dark"
-                    style="font-size: 30px; color: black"
-                    >refresh</mat-icon
-                  >
+                <button mat-icon-button class="cursor-pointer" aria-label="Volver al Inicio" (click)="onReset()">
+                  <mat-icon class="text-dark" style="font-size: 30px; color: black">refresh</mat-icon>
                 </button>
               </td>
             </tr>
@@ -27,756 +18,192 @@
           </mat-card-header>
           <form>
             <mat-card-content>
-              <label id="example-radio-group-label"
-                >Documento de Identidad</label
-              >
+              <label id="example-radio-group-label">Documento de Identidad</label>
               <br />
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="
-                  logInComponent.datosBasicosModuleSend.id_tipo_documento
-                "
-                [ngModelOptions]="{ standalone: true }"
-              >
-                <mat-radio-button
-                  class="example-radio-button"
-                  *ngFor="let season of data_documento"
-                  [value]="season.id"
-                >
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="logInComponent.datosBasicosModuleSend.id_tipo_documento" [ngModelOptions]="{ standalone: true }">
+                <mat-radio-button class="example-radio-button" *ngFor="let season of data_documento" [value]="season.id">
                   {{ season.nombre }}
                 </mat-radio-button>
               </mat-radio-group>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.id_tipo_documento == 4
-                "
-              >
-                <input
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.otro_documento
-                  "
-                  matInput
-                  placeholder="Tipo de Documento"
-                />
+              <mat-form-field appearance="outline" style="height: 70px" class="example-full-width" *ngIf="logInComponent.datosBasicosModuleSend.id_tipo_documento == 4">
+                <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.otro_documento" matInput placeholder="Tipo de Documento"/>
               </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.num_documento
-                  "
-                  (blur)="onBucarInformacion()"
-                  placeholder="Número de Documento"
-                  required
-                />
+              <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.num_documento" (blur)="onBucarInformacion()" placeholder="Número de Documento" required/>
               </mat-form-field>
-              <mat-error
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.num_documento == null ||
-                  logInComponent.datosBasicosModuleSend.num_documento.length ==
-                    0
-                "
-              >
-                <mat-error class="error-message"
-                  >Dato obligatorio (Tal cual el documento de
-                  identidad)</mat-error
-                >
+              <mat-error *ngIf="logInComponent.datosBasicosModuleSend.num_documento == null || logInComponent.datosBasicosModuleSend.num_documento.length == 0">
+                <mat-error class="error-message">Dato obligatorio (Tal cual el documento de identidad)</mat-error>
               </mat-error>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="logInComponent.datosBasicosModuleSend.nombres"
-                  placeholder="Nombres"
-                  required
-                />
+              <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.nombres" placeholder="Nombres" required/>
               </mat-form-field>
-              <mat-error
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.nombres == null ||
-                  logInComponent.datosBasicosModuleSend.nombres.length == 0
-                "
-              >
-                <mat-error class="error-message"
-                  >Dato obligatorio (Tal cual el documento de
-                  identidad)</mat-error
-                >
+              <mat-error *ngIf=" logInComponent.datosBasicosModuleSend.nombres == null || logInComponent.datosBasicosModuleSend.nombres.length == 0">
+                <mat-error class="error-message">Dato obligatorio (Tal cual el documento de identidad)</mat-error>
               </mat-error>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="logInComponent.datosBasicosModuleSend.apellidos"
-                  placeholder="Apellidos"
-                  required
-                />
+              <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.apellidos" placeholder="Apellidos" required>
               </mat-form-field>
-              <mat-error
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.apellidos == null ||
-                  logInComponent.datosBasicosModuleSend.apellidos.length == 0
-                "
-              >
-                <mat-error class="error-message"
-                  >Dato obligatorio (Tal cual el documento de
-                  identidad)</mat-error
-                >
+              <mat-error *ngIf="logInComponent.datosBasicosModuleSend.apellidos == null || logInComponent.datosBasicosModuleSend.apellidos.length == 0">
+                <mat-error class="error-message">Dato obligatorio (Tal cual el documento de identidad)</mat-error>
               </mat-error>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.pais_origen
-                  "
-                  placeholder="Nacionalidad"
-                />
-              </mat-form-field>
-
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <mat-label>País de origen</mat-label>
-                <mat-select
-                  placeholder="pais"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.id_pais_nacionalidad
-                  "
-                  name="pais"
-                >
-                  <mat-option
-                    *ngFor="let pais of data_paises"
-                    [value]="pais.id"
-                  >
-                    {{ pais.nombre }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.cuidad_origen
-                  "
-                  [ngModelOptions]="{ standalone: true }"
-                  placeholder="Ciudad de Origen"
-                />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <mat-label>Fecha de Nacimiento</mat-label>
-                <input
-                  matInput
-                  type="date"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.fecha_nacimiento
-                  "
-                  [ngModelOptions]="{ standalone: true }"
-                  class="form-control"
-                  id="txtvalor"
-                  ng-model="datos.Fecha"
-                  placeholder="Fecha"
-                />
-              </mat-form-field>
-              <div *ngIf="validateTitular">
-                <mat-error
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.fecha_nacimiento ==
-                      null ||
-                    logInComponent.datosBasicosModuleSend.fecha_nacimiento
-                      .length == 0
-                  "
-                >
-                  <mat-error class="error-message">Dato obligatorio</mat-error>
-                </mat-error>
-              </div>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <mat-label>Estado Civil</mat-label>
-                <mat-select
-                  placeholder="estadocivil"
-                  (selectionChange)="onResetValidate()"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.id_estado_civil
-                  "
-                  name="operacion"
-                >
-                  <mat-option
-                    *ngFor="let estadocivil of data_estadocivil"
-                    [value]="estadocivil.id"
-                  >
-                    {{ estadocivil.nombre }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="validateTitular">
-                <mat-error
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.id_estado_civil == 0
-                  "
-                >
-                  <mat-error class="error-message">Dato obligatorio</mat-error>
-                </mat-error>
-              </div>
-              <div
-                style="background-color: azure; padding: 15px"
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.id_estado_civil == 2 ||
-                  logInComponent.datosBasicosModuleSend.id_estado_civil == 5
-                "
-              >
-                <hr style="background-color: green; height: 2px" />
-                <label
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.id_estado_civil == 2
-                  "
-                  id="example-radio-group-label"
-                  >Separación de Patrimonios</label
-                >
-                <br />
-                <mat-radio-group
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.id_estado_civil == 2
-                  "
-                  aria-labelledby="example-radio-group-label"
-                  class="example-radio-group"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.separa_patrimonio
-                  "
-                  [ngModelOptions]="{ standalone: true }"
-                >
-                  <mat-radio-button
-                    class="example-radio-button"
-                    *ngFor="let separacion of separacions"
-                    [value]="separacion.id"
-                  >
-                    {{ separacion.nombre }}
-                  </mat-radio-button>
-                </mat-radio-group>
-                <h5
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.id_estado_civil == 2
-                  "
-                >
-                  Datos Cónyuge
-                </h5>
-                <h5
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.id_estado_civil == 5
-                  "
-                >
-                  Datos Conviviente
-                </h5>
-
-                <mat-form-field
-                  appearance="outline"
-                  style="height: 70px"
-                  class="example-full-width"
-                >
-                  <input
-                    matInput
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="
-                      logInComponent.datosBasicosModuleSend.nombre_conyugue
-                    "
-                    placeholder="Nombre y Apellidos"
-                  />
+              <div *ngIf="validaMostrarInformacionPersonalInput()">
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.pais_origen" placeholder="Nacionalidad"/>
                 </mat-form-field>
-
-                <mat-form-field
-                  appearance="outline"
-                  style="height: 70px"
-                  class="example-full-width"
-                >
-                  <input
-                    matInput
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="
-                      logInComponent.datosBasicosModuleSend
-                        .nombre_conyugue_documento
-                    "
-                    placeholder="DNI O C.E. N°"
-                  />
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <mat-label>País de origen</mat-label>
+                  <mat-select placeholder="pais" [(ngModel)]="logInComponent.datosBasicosModuleSend.id_pais_nacionalidad" name="pais">
+                    <mat-option *ngFor="let pais of data_paises" [value]="pais.id">
+                      {{ pais.nombre }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-
-                <mat-form-field
-                  appearance="outline"
-                  style="height: 70px"
-                  class="example-full-width"
-                >
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <input matInput [(ngModel)]="logInComponent.datosBasicosModuleSend.cuidad_origen" [ngModelOptions]="{ standalone: true }" placeholder="Ciudad de Origen"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
                   <mat-label>Fecha de Nacimiento</mat-label>
-                  <input
-                    matInput
-                    type="date"
-                    [(ngModel)]="
-                      logInComponent.datosBasicosModuleSend
-                        .conyugue_fecha_nacimiento
-                    "
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-control"
-                    id="txtvalor"
-                    ng-model="datos.Fecha"
-                    placeholder="Fecha"
-                  />
+                  <input matInput type="date" [(ngModel)]="logInComponent.datosBasicosModuleSend.fecha_nacimiento" [ngModelOptions]="{ standalone: true }" class="form-control" id="txtvalor" ng-model="datos.Fecha" placeholder="Fecha"/>
                 </mat-form-field>
-
-                <mat-form-field
-                  appearance="outline"
-                  style="height: 70px"
-                  class="example-full-width"
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.separa_patrimonio == 0
-                  "
-                >
-                  <input
-                    matInput
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="logInComponent.datosBasicosModuleSend.partida"
-                    placeholder="Inscripción registral (Partida N°)"
-                  />
+                <div *ngIf="validateTitular">
+                  <mat-error *ngIf="logInComponent.datosBasicosModuleSend.fecha_nacimiento == null || logInComponent.datosBasicosModuleSend.fecha_nacimiento.length == 0">
+                    <mat-error class="error-message">Dato obligatorio</mat-error>
+                  </mat-error>
+                </div>
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <mat-label>Estado Civil</mat-label>
+                  <mat-select placeholder="estadocivil" (selectionChange)="onResetValidate()" [(ngModel)]="logInComponent.datosBasicosModuleSend.id_estado_civil" name="operacion">
+                    <mat-option *ngFor="let estadocivil of data_estadocivil" [value]="estadocivil.id">
+                      {{ estadocivil.nombre }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-                <div
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.separa_patrimonio == 0
-                  "
-                >
+                <div *ngIf="validateTitular">
+                  <mat-error *ngIf="logInComponent.datosBasicosModuleSend.id_estado_civil == 0">
+                    <mat-error class="error-message">Dato obligatorio</mat-error>
+                  </mat-error>
+                </div>
+                <div style="background-color: azure; padding: 15px" *ngIf=" logInComponent.datosBasicosModuleSend.id_estado_civil == 2 || logInComponent.datosBasicosModuleSend.id_estado_civil == 5">
+                  <hr style="background-color: green; height: 2px" />
+                  <label *ngIf="logInComponent.datosBasicosModuleSend.id_estado_civil == 2" id="example-radio-group-label">Separación de Patrimonios</label>
+                  <br />
+                  <mat-radio-group *ngIf="logInComponent.datosBasicosModuleSend.id_estado_civil == 2" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="logInComponent.datosBasicosModuleSend.separa_patrimonio" [ngModelOptions]="{ standalone: true }">
+                    <mat-radio-button class="example-radio-button" *ngFor="let separacion of separacions" [value]="separacion.id">
+                      {{ separacion.nombre }}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                  <h5 *ngIf="logInComponent.datosBasicosModuleSend.id_estado_civil == 2">Datos Cónyuge</h5>
+                  <h5 *ngIf="logInComponent.datosBasicosModuleSend.id_estado_civil == 5">Datos Conviviente</h5>
+                  <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                    <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.nombre_conyugue" placeholder="Nombre y Apellidos"/>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                    <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.nombre_conyugue_documento" placeholder="DNI O C.E. N°"/>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                    <mat-label>Fecha de Nacimiento</mat-label>
+                    <input matInput type="date" [(ngModel)]="logInComponent.datosBasicosModuleSend.conyugue_fecha_nacimiento" [ngModelOptions]="{ standalone: true }" class="form-control" id="txtvalor" ng-model="datos.Fecha" placeholder="Fecha"/>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="height: 70px" class="example-full-width" *ngIf="logInComponent.datosBasicosModuleSend.separa_patrimonio == 0">
+                    <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.partida" placeholder="Inscripción registral (Partida N°)"/>
+                  </mat-form-field>
+                  <div *ngIf="logInComponent.datosBasicosModuleSend.separa_patrimonio == 0">
+                    <div>
+                      <mat-error *ngIf="logInComponent.datosBasicosModuleSend.partida == null || logInComponent.datosBasicosModuleSend.partida.length == 0">
+                        <mat-error class="error-message">Dato obligatorio</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <mat-form-field appearance="outline" style="height: 70px" class="example-full-width" *ngIf=" logInComponent.datosBasicosModuleSend.separa_patrimonio == 0">
+                    <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.sede" placeholder="Sede (de inscripción)"/>
+                  </mat-form-field>
+                  <div *ngIf="logInComponent.datosBasicosModuleSend.separa_patrimonio == 0">
+                    <div>
+                      <mat-error *ngIf="logInComponent.datosBasicosModuleSend.sede == null || logInComponent.datosBasicosModuleSend.sede.length == 0">
+                        <mat-error class="error-message">Dato obligatorio</mat-error>
+                      </mat-error>
+                    </div>
+                  </div>
+                  <hr style="background-color: green; height: 2px" />
+                </div>
+                <span class="example-list-section">
+                  <mat-checkbox class="example-margin" [checked]="logInComponent.datosBasicosModuleSend.extranjero" (change)="onExtranjero($event.checked)">
+                    Extranjero
+                  </mat-checkbox>
+                </span>
+                <mat-form-field *ngIf="!logInComponent.datosBasicosModuleSend.extranjero" appearance="outline" style="height: 70px" class="example-full-width">
+                  <mat-select [formControl]="ubigeoCtrl" placeholder="Distrito" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="ubigeoFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let bank of filteredUbigeo | async" [value]="bank">
+                      {{ bank.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="(logInComponent.datosBasicosModuleSend.id_ubigeo == null || logInComponent.datosBasicosModuleSend.id_ubigeo == 0) && !logInComponent.datosBasicosModuleSend.extranjero">
                   <div>
-                    <mat-error
-                      *ngIf="
-                        logInComponent.datosBasicosModuleSend.partida == null ||
-                        logInComponent.datosBasicosModuleSend.partida.length ==
-                          0
-                      "
-                    >
-                      <mat-error class="error-message"
-                        >Dato obligatorio</mat-error
-                      >
+                    <mat-error>
+                      <mat-error class="error-message">Dato obligatorio</mat-error>
                     </mat-error>
                   </div>
                 </div>
-                <mat-form-field
-                  appearance="outline"
-                  style="height: 70px"
-                  class="example-full-width"
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.separa_patrimonio == 0
-                  "
-                >
-                  <input
-                    matInput
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="logInComponent.datosBasicosModuleSend.sede"
-                    placeholder="Sede (de inscripción)"
-                  />
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <input matInput [(ngModel)]="logInComponent.datosBasicosModuleSend.domicilio" [ngModelOptions]="{ standalone: true }" placeholder="Domicilio (lugar de residencia)"/>
                 </mat-form-field>
-                <div
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.separa_patrimonio == 0
-                  "
-                >
-                  <div>
-                    <mat-error
-                      *ngIf="
-                        logInComponent.datosBasicosModuleSend.sede == null ||
-                        logInComponent.datosBasicosModuleSend.sede.length == 0
-                      "
-                    >
-                      <mat-error class="error-message"
-                        >Dato obligatorio</mat-error
-                      >
-                    </mat-error>
-                  </div>
+                <div *ngIf="validateTitular">
+                  <mat-error *ngIf="logInComponent.datosBasicosModuleSend.domicilio == null || logInComponent.datosBasicosModuleSend.domicilio.length == 0">
+                    <mat-error class="error-message">Dato obligatorio</mat-error>
+                  </mat-error>
                 </div>
-                <hr style="background-color: green; height: 2px" />
-              </div>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <mat-select
-                  [formControl]="ubigeoCtrl"
-                  placeholder="Distrito"
-                  #singleSelect
-                >
-                  <mat-option>
-                    <ngx-mat-select-search
-                      [formControl]="ubigeoFilterCtrl"
-                    ></ngx-mat-select-search>
-                  </mat-option>
-                  <mat-option
-                    *ngFor="let bank of filteredUbigeo | async"
-                    [value]="bank"
-                  >
-                    {{ bank.nombre }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <div
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.id_ubigeo == null ||
-                  logInComponent.datosBasicosModuleSend.id_ubigeo == 0
-                "
-              >
-                <div>
-                  <mat-error>
-                    <mat-error class="error-message"
-                      >Dato obligatorio</mat-error
-                    >
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.telefono_uno" placeholder="Teléfono Fijo"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.telefono_dos" placeholder="Teléfono Celular"/>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="height: 70px" class="example-full-width">
+                  <input matInput [ngModelOptions]="{ standalone: true }" [(ngModel)]="logInComponent.datosBasicosModuleSend.correo_electronico" placeholder="Correo Electronico"/>
+                </mat-form-field>
+                <div *ngIf="validateTitular">
+                  <mat-error *ngIf="logInComponent.datosBasicosModuleSend.correo_electronico == null || logInComponent.datosBasicosModuleSend.correo_electronico.length == 0">
+                    <mat-error class="error-message">Dato obligatorio</mat-error>
                   </mat-error>
                 </div>
               </div>
-              <span class="example-list-section">
-                <mat-checkbox
-                  class="example-margin"
-                  [checked]="logInComponent.datosBasicosModuleSend.extranjero"
-                  (change)="onExtranjero($event.checked)"
-                >
-                  Extranjero
-                </mat-checkbox>
-              </span>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [(ngModel)]="logInComponent.datosBasicosModuleSend.domicilio"
-                  [ngModelOptions]="{ standalone: true }"
-                  placeholder="Domicilio (lugar de residencia)"
-                />
-              </mat-form-field>
-              <div *ngIf="validateTitular">
-                <mat-error
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.domicilio == null ||
-                    logInComponent.datosBasicosModuleSend.domicilio.length == 0
-                  "
-                >
-                  <mat-error class="error-message">Dato obligatorio</mat-error>
-                </mat-error>
-              </div>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.telefono_uno
-                  "
-                  placeholder="Teléfono Fijo"
-                />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.telefono_dos
-                  "
-                  placeholder="Teléfono Celular"
-                />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                style="height: 70px"
-                class="example-full-width"
-              >
-                <input
-                  matInput
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="
-                    logInComponent.datosBasicosModuleSend.correo_electronico
-                  "
-                  placeholder="Correo Electronico"
-                />
-              </mat-form-field>
-              <div *ngIf="validateTitular">
-                <mat-error
-                  *ngIf="
-                    logInComponent.datosBasicosModuleSend.correo_electronico ==
-                      null ||
-                    logInComponent.datosBasicosModuleSend.correo_electronico
-                      .length == 0
-                  "
-                >
-                  <mat-error class="error-message">Dato obligatorio</mat-error>
-                </mat-error>
-              </div>
             </mat-card-content>
-            <div
-              *ngIf="
-                validateTitular == false &&
-                logInComponent.datosBasicosModuleSend.id_estado_civil != 5 &&
-                logInComponent.datosBasicosModuleSend.id_estado_civil != 2
-              "
-            >
-              <div
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.apellidos != null &&
-                  logInComponent.datosBasicosModuleSend.nombres != null &&
-                  logInComponent.datosBasicosModuleSend.id_ubigeo > 0 &&
-                  logInComponent.datosBasicosModuleSend.num_documento != null &&
-                  logInComponent.datosBasicosModuleSend.num_documento.length >
-                    0 &&
-                  logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
-                  logInComponent.datosBasicosModuleSend.apellidos.length > 0
-                "
-              >
-                <button
-                  mat-stroked-button
-                  color="accent"
-                  (click)="datoslaborales()"
-                  class="btn-block"
-                >
-                  Continuar >>
-                </button>
+            <div *ngIf="validateTitular == false && logInComponent.datosBasicosModuleSend.id_estado_civil != 5 && logInComponent.datosBasicosModuleSend.id_estado_civil != 2">
+              <div *ngIf="valida1()">
+                <button mat-stroked-button color="accent" (click)="datoslaborales()" class="btn-block">Continuar >></button>
               </div>
             </div>
-            <div
-              *ngIf="
-                validateTitular == true &&
-                logInComponent.datosBasicosModuleSend.id_estado_civil != 5 &&
-                logInComponent.datosBasicosModuleSend.id_estado_civil != 2
-              "
-            >
-              <div
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.apellidos != null &&
-                  logInComponent.datosBasicosModuleSend.fecha_nacimiento !=
-                    null &&
-                  logInComponent.datosBasicosModuleSend.domicilio != null &&
-                  logInComponent.datosBasicosModuleSend.correo_electronico !=
-                    null &&
-                  logInComponent.datosBasicosModuleSend.nombres != null &&
-                  logInComponent.datosBasicosModuleSend.num_documento != null &&
-                  logInComponent.datosBasicosModuleSend.id_ubigeo > 0 &&
-                  logInComponent.datosBasicosModuleSend.num_documento.length >
-                    0 &&
-                  logInComponent.datosBasicosModuleSend.fecha_nacimiento
-                    .length > 0 &&
-                  logInComponent.datosBasicosModuleSend.domicilio.length > 0 &&
-                  logInComponent.datosBasicosModuleSend.correo_electronico
-                    .length > 0 &&
-                  logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
-                  logInComponent.datosBasicosModuleSend.apellidos.length > 0
-                "
-              >
-                <button
-                  mat-stroked-button
-                  color="accent"
-                  (click)="datoslaborales()"
-                  class="btn-block"
-                >
-                  Continuar >>
-                </button>
+            <div *ngIf="validateTitular == true && logInComponent.datosBasicosModuleSend.id_estado_civil != 5 && logInComponent.datosBasicosModuleSend.id_estado_civil != 2">
+              <div *ngIf="valida2()">
+                <button mat-stroked-button color="accent" (click)="datoslaborales()" class="btn-block">Continuar >></button>
               </div>
             </div>
-            <div
-              *ngIf="
-                logInComponent.datosBasicosModuleSend.id_estado_civil == 5 ||
-                logInComponent.datosBasicosModuleSend.id_estado_civil == 2
-              "
-            >
-              <div
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.separa_patrimonio == 0
-                "
-              >
+            <div *ngIf="logInComponent.datosBasicosModuleSend.id_estado_civil == 5 || logInComponent.datosBasicosModuleSend.id_estado_civil == 2">
+              <div *ngIf="logInComponent.datosBasicosModuleSend.separa_patrimonio == 0">
                 <div *ngIf="validateTitular">
-                  <div
-                    *ngIf="
-                      logInComponent.datosBasicosModuleSend.fecha_nacimiento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.id_estado_civil !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.domicilio != null &&
-                      logInComponent.datosBasicosModuleSend
-                        .correo_electronico != null &&
-                      logInComponent.datosBasicosModuleSend.partida != null &&
-                      logInComponent.datosBasicosModuleSend.sede != null &&
-                      logInComponent.datosBasicosModuleSend.num_documento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.nombres != null &&
-                      logInComponent.datosBasicosModuleSend.id_ubigeo > 0 &&
-                      logInComponent.datosBasicosModuleSend.apellidos != null &&
-                      logInComponent.datosBasicosModuleSend.id_estado_civil >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.fecha_nacimiento
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.domicilio.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.correo_electronico
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.partida.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.sede.length > 0 &&
-                      logInComponent.datosBasicosModuleSend.num_documento
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.nombres.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.apellidos.length > 0
-                    "
-                  >
-                    <button
-                      mat-stroked-button
-                      color="accent"
-                      (click)="datoslaborales()"
-                      class="btn-block"
-                    >
-                      Continuar >>
-                    </button>
+                  <div *ngIf="valida3()">
+                    <button mat-stroked-button color="accent" (click)="datoslaborales()" class="btn-block">Continuar >></button>
                   </div>
                 </div>
                 <div *ngIf="!validateTitular">
-                  <div
-                    *ngIf="
-                      logInComponent.datosBasicosModuleSend.partida != null &&
-                      logInComponent.datosBasicosModuleSend.sede != null &&
-                      logInComponent.datosBasicosModuleSend.num_documento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.nombres != null &&
-                      logInComponent.datosBasicosModuleSend.apellidos != null &&
-                      logInComponent.datosBasicosModuleSend.id_ubigeo > 0 &&
-                      logInComponent.datosBasicosModuleSend.partida.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.sede.length > 0 &&
-                      logInComponent.datosBasicosModuleSend.num_documento
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.nombres.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.apellidos.length > 0
-                    "
-                  >
-                    <button
-                      mat-stroked-button
-                      color="accent"
-                      (click)="datoslaborales()"
-                      class="btn-block"
-                    >
-                      Continuar >>
-                    </button>
+                  <div *ngIf="valida4()">
+                    <button mat-stroked-button color="accent" (click)="datoslaborales()" class="btn-block">Continuar >></button>
                   </div>
                 </div>
               </div>
-              <div
-                *ngIf="
-                  logInComponent.datosBasicosModuleSend.separa_patrimonio == 1
-                "
-              >
+              <div *ngIf="logInComponent.datosBasicosModuleSend.separa_patrimonio == 1">
                 <div *ngIf="validateTitular">
-                  <div
-                    *ngIf="
-                      logInComponent.datosBasicosModuleSend.fecha_nacimiento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.id_estado_civil >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.domicilio != null &&
-                      logInComponent.datosBasicosModuleSend
-                        .correo_electronico != null &&
-                      logInComponent.datosBasicosModuleSend.num_documento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.id_ubigeo > 0 &&
-                      logInComponent.datosBasicosModuleSend.nombres != null &&
-                      logInComponent.datosBasicosModuleSend.apellidos != null &&
-                      logInComponent.datosBasicosModuleSend.fecha_nacimiento
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.id_estado_civil >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.domicilio.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.correo_electronico
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.num_documento
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.nombres.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.apellidos.length > 0
-                    "
-                  >
-                    <button
-                      mat-stroked-button
-                      color="accent"
-                      (click)="datoslaborales()"
-                      class="btn-block"
-                    >
-                      Continuar >>
-                    </button>
+                  <div *ngIf="valida5()">
+                    <button mat-stroked-button color="accent" (click)="datoslaborales()" class="btn-block">Continuar >></button>
                   </div>
                 </div>
                 <div *ngIf="!validateTitular">
-                  <div
-                    *ngIf="
-                      logInComponent.datosBasicosModuleSend.fecha_nacimiento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.id_estado_civil >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.domicilio != null &&
-                      logInComponent.datosBasicosModuleSend.num_documento !=
-                        null &&
-                      logInComponent.datosBasicosModuleSend.nombres != null &&
-                      logInComponent.datosBasicosModuleSend.id_ubigeo > 0 &&
-                      logInComponent.datosBasicosModuleSend.apellidos != null &&
-                      logInComponent.datosBasicosModuleSend.id_estado_civil >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.num_documento
-                        .length > 0 &&
-                      logInComponent.datosBasicosModuleSend.nombres.length >
-                        0 &&
-                      logInComponent.datosBasicosModuleSend.apellidos.length > 0
-                    "
-                  >
-                    <button
-                      mat-stroked-button
-                      color="accent"
-                      (click)="datoslaborales()"
-                      class="btn-block"
-                    >
-                      Continuar >>
-                    </button>
+                  <div *ngIf="valida6()">
+                    <button mat-stroked-button color="accent" (click)="datoslaborales()" class="btn-block">Continuar >></button>
                   </div>
                 </div>
               </div>

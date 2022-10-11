@@ -50,6 +50,7 @@ export class LogInComponent implements OnInit {
   opciones: any = {};
   movil: boolean = false;
 
+  public biDocumentoEncontrado: boolean = false;
   public datosBasicosModuleSend: DatosBasicosModule = new DatosBasicosModule();
   public datosLaboralesModuleSend: DatosLaboralesModule = new DatosLaboralesModule();
   public datosApoderadoModuleSend: DatosApoderadoModule = new DatosApoderadoModule();
@@ -193,6 +194,7 @@ export class LogInComponent implements OnInit {
   }
 
   onReset() {
+    this.biDocumentoEncontrado = false;
     this.registroPosi = 0;
     this.documento = 0;
     this.NDocumento = "";

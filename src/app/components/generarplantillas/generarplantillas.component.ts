@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MantenimientoService } from '../../services/mantenimiento.service';
 import { LogInComponent } from '../log-in/log-in.component';
 import { FormularioService } from '../../services/formulario.service';
 import { Funciones } from '../../funciones/funciones';
@@ -11,8 +10,6 @@ import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import { environment } from '../../../environments/environment';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { Item } from 'pdfmake-wrapper';
-import Swal from 'sweetalert2';
 
 function loadFile(url, callback) {
   PizZipUtils.getBinaryContent(url, callback);
@@ -28,7 +25,6 @@ export interface kardex {
   archivo_name: string,
   archivo_size: number,
   detalle_numero_servicio: string
-  //detalle_numero_servicio: kardex_detalle_numero_servicio []
 }
 
 export interface kardex_detalle_numero_servicio {
@@ -45,7 +41,9 @@ export interface kardex_detalle_numero_servicio {
   styleUrls: ['./generarplantillas.component.css']
 })
 export class GenerarplantillasComponent implements OnInit {
-  
+
+  kardexPlaca: any = null;
+
   kardex_reg: kardex = {
     kardex_numero: '',
     numero_placa: '',
@@ -84,7 +82,6 @@ export class GenerarplantillasComponent implements OnInit {
 
   constructor(
     private _router: Router,
-    private mantenimientoService: MantenimientoService,
     public logInComponent: LogInComponent,
     private formularioService: FormularioService,
     public funciones: Funciones
@@ -99,7 +96,6 @@ export class GenerarplantillasComponent implements OnInit {
     this.vcPlaca = '';
     this.vcPlaca2 = '';
     this.inTipo = 1;
-    //this.onBuscar();
     this.seasons = [
       { 'inTipo': 1, 'nombre': 'Compra Venta'}, 
       { 'inTipo': 2, 'nombre': 'Donación'}, 
@@ -113,42 +109,10 @@ export class GenerarplantillasComponent implements OnInit {
         localStorage.removeItem('token');
         localStorage.removeItem('tipo');
         location.reload();
-        /*let timerInterval
-        Swal.fire({
-          title: 'Sesión expirada por inactividad',
-          html: '',
-          timer: 100000,
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-            localStorage.removeItem('token');
-            localStorage.removeItem('tipo');
-            timerInterval = setInterval(() => {
-              const content = Swal.getContent();
-              location.reload();
-            }, 100000)
-          },
-          willClose: () => {
-            location.reload();
-            clearInterval(timerInterval)
-          }
-        }).then((result) => {
-          if (result.dismiss === Swal.DismissReason.timer) {
-            console.log('I was closed by the timer')
-          }
-        })*/
       }, 1000000);
     }
   }
-  
-  /*applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }*/
-  
+
   onBuscar() {
     this.dataSourceRows = []; 
     var data = {
@@ -180,87 +144,10 @@ export class GenerarplantillasComponent implements OnInit {
               } 
               this.formularioService.postConsultaPlacaVehicular(data).subscribe( 
                 (data: any) => {
+                  debugger;
                   if (data['statuscode'] == 200) {
                     var dataArr2 = data['data'];
-                    this.dataSourceRows = data['data'];
-                    if (dataArr2 != null && dataArr2.length > 0) {
-                      var dataTemp = [];
-                      var adquiriente = "";
-                      var transferente = "";
-                      var adquirienteArr = [];
-                      var transferenteArr = [];
-                      var row = dataArr[0];
-                      adquiriente += dataArr[0].vcpersona;
-                      adquirienteArr.push({
-                        'biActivo': false, 
-                        'numero_servicio': dataArr[0].vcnumeroservicio,
-                        'vcNombre': dataArr[0].vcpersona, 
-                        'fecha': dataArr[0].fecha,
-                        'vcDocumento': dataArr[0].vcnumero_documento,
-                        'vcNacionalidad': dataArr[0].vcnacionalidad,
-                        'vcProfesionOcupacion': dataArr[0].vcprofesionocupacion,
-                        'vcEstadoCivil': dataArr[0].vcestadocivil,
-                        'vcDomicilio': dataArr[0].vcdomicilio,
-                        'vcDistrito': dataArr[0].vcdistrito,
-                        'vcProvincia': dataArr[0].vcprovincia,
-                        'vcDepartamento': dataArr[0].vcdepartamento,
-                        'vcRepresentante': dataArr[0].vcrepresentante,
-                        'vcMonedaLetras': this.funciones.NumeroALetras(dataArr[0].valor),
-                        'vcMoneda': this.funciones.formatNumberMoney(dataArr[0].valor),
-                        'vcSMoneda': dataArr[0].moneda === "SOLES" ? "S/ " : "US$ ",
-                        'vcTMoneda': dataArr2[0].moneda === "SOLES" ? dataArr2[0].moneda : 'DÓLARES AMERICANOS',
-                        'vcMarca': dataArr[0].vcmarca,
-                        'vcModelo': dataArr[0].vcmodelo,
-                        'vcPlaca': dataArr[0].vcplaca,
-                        'deMonto': dataArr[0].valor,
-                        'vcMonto': dataArr[0].valor
-                      });
-
-                      transferente += dataArr2[0].vcpersona;
-                      transferenteArr.push({
-                        'biActivo': false, 
-                        'numero_servicio': dataArr[0].vcnumeroservicio,
-                        'fecha': dataArr[0].fecha,
-                        'vcNombre': dataArr2[0].vcpersona, 
-                        'vcDocumento': dataArr2[0].vcnumero_documento,
-                        'vcNacionalidad': dataArr2[0].vcnacionalidad,
-                        'vcProfesionOcupacion': dataArr2[0].vcprofesionocupacion,
-                        'vcEstadoCivil': dataArr2[0].vcestadocivil,
-                        'vcDomicilio': dataArr2[0].vcdomicilio,
-                        'vcDistrito': dataArr2[0].vcdistrito,
-                        'vcProvincia': dataArr2[0].vcprovincia,
-                        'vcDepartamento': dataArr2[0].vcdepartamento,
-                        'vcRepresentante': dataArr2[0].vcrepresentante,
-                        'vcMonedaLetras': this.funciones.NumeroALetras(dataArr2[0].valor),
-                        'vcMoneda': this.funciones.formatNumberMoney(dataArr2[0].valor),
-                        'vcSMoneda': dataArr2[0].moneda === "SOLES" ? "S/ " : "US$ ",
-                        'vcTMoneda': dataArr2[0].moneda === "SOLES" ? dataArr2[0].moneda : 'DÓLARES AMERICANOS',
-                        'vcMarca': dataArr2[0].vcmarca,
-                        'vcModelo': dataArr2[0].vcmodelo,
-                        'vcPlaca': dataArr2[0].vcplaca,
-                        'deMonto': dataArr2[0].valor,
-                        'vcMonto': dataArr2[0].valor
-                      });
-
-                      row.isDepositoCuenta = row.mp_deposito_cuenta == 0 ? true: false;
-                      row.isTransferenciaBancaria = row.mp_transferencia_bancaria == 0 ? true: false;
-                      row.isCheque = row.mp_cheque == 0 ? true: false;
-                      row.isEfectivo = row.mp_efectivo == 0 ? true: false;
-
-                      row.vcPlacas = (row.vcplaca + "/" + dataArr2[0].vcplaca);
-                      row.adquiriente = adquiriente;
-                      row.transferente = transferente;
-                      row.adquirienteJson = adquirienteArr;
-                      row.transferenteJson = transferenteArr;
-                      row.kardex_numero = '';
-                      dataTemp.push(row);
-                      //this.dataSource = new MatTableDataSource<PeriodicElement>(dataTemp);
-                      //this.dataSource.paginator = this.paginator;
-                      this.dataSourceRows = dataTemp;
-                    } else {
-                      //this.funciones.mensajeAlerta("Alerta", "No se encontro resultados");
-                    }
-                    //console.log(this.dataSource);
+                    console.log (dataArr2);
                   } else {
                     this.funciones.mensajeError("", data['mensaje']);
                   }
@@ -283,87 +170,13 @@ export class GenerarplantillasComponent implements OnInit {
       })
     } else {
       if (!this.funciones.onValidaVacio(this.vcPlaca)) {
-        //this.funciones.mensajeAlerta('Alerta', 'Ingresar numero de placa');
         return;
       }
       this.funciones.showLoading();
-      this.formularioService.postConsultaPlacaVehicular(data).subscribe( 
-        (data: any) => {
-          if (data['statuscode'] == 200) {
-            var dataArr = data['data'];
-            //this.dataSourceRows = data['data'];
-            if (dataArr != null && dataArr.length > 0) {
-              var dataTemp = [];
-              var adquiriente = "";
-              var transferente = "";
-              var adquirienteArr = [];//{ 'adquiriente': [] };
-              var transferenteArr = [];//{ 'transferente': [] };
-                var row = dataArr[0];
-                for (let j = 0; j < dataArr.length; j++) {
-                  if (dataArr[j].intipo_condicion == 2) {
-                    adquiriente += dataArr[j].vcpersona + ', ';
-                    adquirienteArr.push({
-                      'biActivo': false, 
-                      'numero_servicio': dataArr[j].vcnumeroservicio,
-                      'fecha': dataArr[j].fecha,
-                      'vcNombre': dataArr[j].vcpersona, 
-                      'vcTipoDocumento': dataArr[j].vctipodocumento,
-                      'vcDocumento': dataArr[j].vcnumero_documento,
-                      'vcNacionalidad': dataArr[j].vcnacionalidad,
-                      'vcProfesionOcupacion': dataArr[j].vcprofesionocupacion,
-                      'vcEstadoCivil': dataArr[j].vcestadocivil,
-                      'vcDomicilio': dataArr[j].vcdomicilio,
-                      'vcDistrito': dataArr[j].vcdistrito,
-                      'vcProvincia': dataArr[j].vcprovincia,
-                      'vcDepartamento': dataArr[j].vcdepartamento,
-                      'vcRepresentante': dataArr[j].vcrepresentante
-                    });
-                  }
-                  else if (dataArr[j].intipo_condicion == 1) {
-                    transferente += dataArr[j].vcpersona + ', ';
-                    transferenteArr.push({
-                      'biActivo': false, 
-                      'numero_servicio': dataArr[j].vcnumeroservicio,
-                      'fecha': dataArr[j].fecha,
-                      'vcNombre': dataArr[j].vcpersona, 
-                      'vcTipoDocumento': dataArr[j].vctipodocumento,
-                      'vcDocumento': dataArr[j].vcnumero_documento,
-                      'vcNacionalidad': dataArr[j].vcnacionalidad,
-                      'vcProfesionOcupacion': dataArr[j].vcprofesionocupacion,
-                      'vcEstadoCivil': dataArr[j].vcestadocivil,
-                      'vcDomicilio': dataArr[j].vcdomicilio,
-                      'vcDistrito': dataArr[j].vcdistrito,
-                      'vcProvincia': dataArr[j].vcprovincia,
-                      'vcDepartamento': dataArr[j].vcdepartamento,
-                      'vcRepresentante': dataArr[j].vcrepresentante
-                    });
-                  }
-                }
-                row.isDepositoCuenta = row.mp_deposito_cuenta == 0 ? true: false;
-                row.isTransferenciaBancaria = row.mp_transferencia_bancaria == 0 ? true: false;
-                row.isCheque = row.mp_cheque == 0 ? true: false;
-                row.isEfectivo = row.mp_efectivo == 0 ? true: false;
-                row.adquiriente = adquiriente;
-                row.transferente = transferente;
-                row.valorLet = this.funciones.NumeroALetras(row.valor);
-                row.valorNum = this.funciones.formatNumberMoney(row.valor);
-                row.sinbolo = row.moneda === "SOLES" ? "S/ " : "US$ ";
-                row.moneda = row.moneda === "SOLES" ? row.moneda : 'DÓLARES AMERICANOS',
-                row.adquirienteJson = adquirienteArr;
-                row.transferenteJson = transferenteArr;
-                row.kardex_numero = '';
-                dataTemp.push(row);
-              //this.dataSource = new MatTableDataSource<PeriodicElement>(dataTemp);
-              //this.dataSource.paginator = this.paginator;
-              this.dataSourceRows = dataTemp;
-              console.log(dataTemp);
-            } else {
-              //this.funciones.mensajeAlerta("Alerta", "No se encontro resultados");
-            }
-            //console.log(this.dataSource);
-          } else {
-            //this.funciones.mensajeError("", data['mensaje']);
-          }
+      this.formularioService.postConsultaPlacaVehicular(data).subscribe(respuesta => {
+          if (respuesta['statuscode'] == 200) {
+            this.onProcesarDatos(respuesta['data']);
+          } 
           this.funciones.hideLoading();
         },
       error => {
@@ -371,6 +184,64 @@ export class GenerarplantillasComponent implements OnInit {
       })
     }
   }
+
+  onProcesarDatos(data: any) {
+    var adquirienteArr = [];
+    var transferenteArr = [];
+    if (data != null) {
+      if (data.natural != null && data.natural.length > 0) {
+        for (let a = 0; a < data.natural.length; a++) {
+          data.natural[a].opciones_tipo_persona_natural = true;
+          data.natural[a].opciones_tipo_persona_juridica = false;
+          data.natural[a].isnoapoderado = (data.natural[a].isnoapoderado == 1) ? true : false;
+          data.natural[a].isapoderado = (data.natural[a].isapoderado == 1) ? true : false;
+          data.natural[a].basico_iscasado = (data.natural[a].basico_iscasado == 1) ? true : false;
+          data.natural[a].basico_isnocasado = (data.natural[a].basico_isnocasado == 1) ? true : false;
+          data.natural[a].isseparacionpatrimonio = (data.natural[a].isseparacionpatrimonio == 0) ? true : false;
+          data.natural[a].isnoseparacionpatrimonio = (data.natural[a].isnoseparacionpatrimonio == 0) ? true : false;
+          if (data.natural[a].opciones_tipo_condicion == 1) {
+            transferenteArr.push(data.natural[a]);
+          } else {
+            adquirienteArr.push(data.natural[a]);
+          }
+        }
+      }
+      if (data.juridica != null && data.juridica.length > 0) {
+        for (let a = 0; a < data.juridica.length; a++) {
+          data.juridica[a].opciones_tipo_persona_natural = false;
+          data.juridica[a].opciones_tipo_persona_juridica = true;
+          if (data.juridica[a].opciones_tipo_condicion == 1) {
+            transferenteArr.push(data.juridica[a]);
+          } else {
+            adquirienteArr.push(data.juridica[a]);
+          }
+        }
+      }
+      if ((adquirienteArr != null && adquirienteArr.length > 0) || transferenteArr != null && transferenteArr.length > 0) {
+        let arrTemp = ((adquirienteArr != null && adquirienteArr.length > 0) ? adquirienteArr : transferenteArr)
+        this.kardexPlaca = {
+          bien_marca: arrTemp[0].bien_marca,
+          bien_modelo: arrTemp[0].bien_modelo,
+          bien_num_placa: arrTemp[0].bien_num_placa,
+          bien_valor: arrTemp[0].bien_valor,
+          opciones_created_at: arrTemp[0].opciones_created_at,
+          
+          isDepositoCuenta: (arrTemp[0].type == "JURIDICA" ? (arrTemp[0].entidad_uif_mp_deposito_cuenta == 0 ? true: false) : (arrTemp[0].mp_deposito_cuenta == 0 ? true: false)),
+          isTransferenciaBancaria: (arrTemp[0].type == "JURIDICA" ? (arrTemp[0].entidad_uif_mp_transferencia_bancaria == 0 ? true: false) : (arrTemp[0].laborales_mp_transferencia_bancaria == 0 ? true: false)),
+          isCheque: (arrTemp[0].type == "JURIDICA" ? (arrTemp[0].entidad_uif_mp_cheque == 0 ? true: false) : (arrTemp[0].laborales_mp_cheque == 0 ? true: false)),
+          isEfectivo: (arrTemp[0].type == "JURIDICA" ? (arrTemp[0].entidad_uif_mp_efectivo == 0 ? true: false) : (arrTemp[0].laborales_mp_efectivo == 0 ? true: false)),
+          
+          valorLet: this.funciones.NumeroALetras(arrTemp[0].bien_valor),
+          valorNum: this.funciones.formatNumberMoney(arrTemp[0].bien_valor),
+          sinbolo: arrTemp[0].bien_moneda === "SOLES" ? "S/ " : "US$ ",
+          moneda: arrTemp[0].bien_moneda === "SOLES" ? arrTemp[0].bien_moneda : 'DÓLARES AMERICANOS',
+          adquirienteJson: adquirienteArr,
+          transferenteJson: transferenteArr
+        }
+      }
+    }
+  }
+  
 
   async seleccionFile (archivo: File) {
     if (!archivo) {
@@ -486,7 +357,6 @@ export class GenerarplantillasComponent implements OnInit {
       (data: any) => {
         this.funciones.hideLoading();
         if (data['statuscode'] == 200) {
-          //this.dataSourceKardex = data['data'];
           this.dataSourceKardex = new MatTableDataSource<any>(data['data']);
           this.dataSourceKardex.paginator = this.paginator;
         } else {
@@ -544,9 +414,9 @@ export class GenerarplantillasComponent implements OnInit {
                 const zip = new PizZip(content);
                 const doc = new Docxtemplater(zip, {
                     paragraphLoop: true,
-                    linebreaks: true,
+                    linebreaks: true
                 });
-                // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+                
                 console.log(element);
                 var adquiriente = [];
                 var transferente = [];
@@ -556,12 +426,12 @@ export class GenerarplantillasComponent implements OnInit {
                 for (let a = 0; a < element.transferenteJson.length; a++) {
                   if (element.transferenteJson[a].biActivo) transferente.push(element.transferenteJson[a]);
                 }
-                doc.render({
-                  vcMarca: element.vcmarca,
-                  vcModelo: element.vcmodelo,
-                  vcPlaca: element.vcplaca,
-                  deMonto: element.valor,
-                  vcMonto: element.valor,
+                var datos = {
+                  vcMarca: element.bien_marca,
+                  vcModelo: element.bien_modelo,
+                  vcPlaca: element.bien_num_placa,
+                  deMonto: element.bien_valor,
+                  vcMonto: element.bien_valor,
                   vcTMoneda: element.moneda,
                   vcSMoneda: element.sinbolo,
                   vcMoneda: element.valorNum,
@@ -574,17 +444,17 @@ export class GenerarplantillasComponent implements OnInit {
                   isChequeTransferencia: (element.isTransferenciaBancaria && element.isCheque ? true : false),
                   adquiriente: adquiriente,
                   transferente: transferente,
-                });
+                };
+                console.log(datos);
+                doc.render(datos);
                 const out = doc.getZip().generate({
                     type: "blob",
                     mimeType:
                         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 });
-                // Output the document using Data-URI
                 saveAs(out, "plantilla.docx");
             }
         );
     this.funciones.hideLoading();
   }
-
 }

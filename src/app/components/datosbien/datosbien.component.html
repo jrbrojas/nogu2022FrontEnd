@@ -6,7 +6,7 @@
           <table style="width: 100%;">
             <tr style="width: 100%;">
               <td style="width: 50%; text-align: left;">
-                <button mat-icon-button class="cursor-pointer" aria-label="Retornar" (click)="return()">
+                <button mat-icon-button class="cursor-pointer" *ngIf="validaMostrarInformacionPersonalInput()" aria-label="Retornar" (click)="return()">
                   <mat-icon class="text-dark" style="font-size: 30px; color: black;">arrow_back</mat-icon>
                 </button>
               </td>
@@ -155,10 +155,10 @@
                 </mat-form-field>
               </div>
             </mat-card-content>
-            <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 0 && logInComponent.datosBienModuleSend.num_placa.length > 0">
+            <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien == 0 && logInComponent.datosBienModuleSend.num_placa.length > 0 && logInComponent.datosBienModuleSend.moneda.length > 0">
               <button mat-stroked-button color="accent" (click)="datosfinales()" class="btn-block">Continuar >></button>
             </div>
-            <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien !== 0">
+            <div *ngIf="logInComponent.datosBienModuleSend.tipo_bien !== 0 && logInComponent.datosBienModuleSend.moneda.length > 0">
               <button mat-stroked-button color="accent" (click)="datosfinales()" class="btn-block">Continuar >></button>
             </div>
           </form>

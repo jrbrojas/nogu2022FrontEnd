@@ -143,7 +143,8 @@ export class DatoscontribuyenteComponent implements AfterViewInit, OnDestroy {
     var data = {
       'tipoQuery': false,
       'numeroDocumento': this.logInComponent.NDocumento,
-      'tipo': this.logInComponent.opciones.tipo_persona
+      'tipo': this.logInComponent.opciones.tipo_persona,
+      'tipo_busqueda': 1
     };
     this.logInComponent.mantenimientoService.postFillDocumento(data).subscribe(
       data => {

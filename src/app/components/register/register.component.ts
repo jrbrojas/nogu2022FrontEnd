@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Pipe, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormularioModels } from '../../models/formulario/formulario.module';
+import { Component, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormularioService } from '../../services/formulario.service';
 import { MantenimientoService } from '../../services/mantenimiento.service';
 import { DatosApoderadoModule } from '../../models/datos-apoderado/datos-apoderado.module';
@@ -10,7 +9,6 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { MatSelect } from '@angular/material';
 import { LogInComponent } from '../log-in/log-in.component';
-import { async } from '@angular/core/testing';
 import { DatosBienModule } from '../../models/datos-bien/datos-bien.module';
 import { DatosLaboralesModule } from '../../models/datos-laborales/datos-laborales.module';
 import { DatosEntityUifModule } from '../../models/datos-entity-uif/datos-entity-uif.module';
@@ -41,6 +39,7 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
   data_paises: any;
   data_estadocivil: any;
   separacions: any = [{ 'id': 0, 'nombre': 'SI' }, { 'id': 1, 'nombre': 'NO' }];
+
 
   constructor(
     private _router: Router,
@@ -105,7 +104,19 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  isTokenLogin(): boolean {
+    var token = localStorage.getItem('token');
+    if (token == undefined || token == null || token == '') return false;
+    return true;
+  }
+
+  validaMostrarInformacionPersonalInput(): boolean {
+    if (this.logInComponent.biDocumentoEncontrado && !this.isTokenLogin() && this.logInComponent.datosTamiteOpcionesModuleSend.tipo_tramite === 2) return false;
+    return true;
+  }
+
   async onBucarInformacion() {
+    this.logInComponent.biDocumentoEncontrado = false;
     if (this.logInComponent.datosBasicosModuleSend.num_documento != undefined && this.logInComponent.datosBasicosModuleSend.num_documento != null && this.logInComponent.datosBasicosModuleSend.num_documento != '' && this.logInComponent.datosBasicosModuleSend.num_documento.length > 0) {
       this.logInComponent.NDocumento = this.logInComponent.datosBasicosModuleSend.num_documento;
       this.logInComponent.funciones.showLoading();
@@ -113,7 +124,8 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
       var data = {
         'tipoQuery': false,
         'numeroDocumento': this.logInComponent.NDocumento,
-        'tipo': this.logInComponent.opciones.tipo_persona
+        'tipo': this.logInComponent.opciones.tipo_persona,
+        'tipo_busqueda': 1
       };
       await this.logInComponent.mantenimientoService.postFillDocumento(data).subscribe(
         data => {
@@ -130,11 +142,11 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
               this.logInComponent.funciones.mensajeOk(msn[1], msn[0]);
               this.logInComponent.funciones.hideLoading();
               var dataTemmp = data['data'];
+              this.logInComponent.biDocumentoEncontrado = true;
               if (this.logInComponent.opciones.tipo_persona == 2) {
                 var basicos = dataTemmp.resp_basicos;
                 var apoderado = dataTemmp.resp_apoderado;
                 var laborales = dataTemmp.resp_laborales;
-                var bien = dataTemmp.resp_bien;
 
                 if (basicos == null) {
                   basicos = new DatosBasicosModule();
@@ -171,18 +183,6 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
                     apoderado.fecha_nacimiento = this.logInComponent.formato_fecha(apoderado.fecha_nacimiento);
                   }
                   this.logInComponent.datosApoderadoModuleSend = apoderado;
-                }
-    
-                if (bien == null) {
-                  bien = new DatosBienModule();
-                } else {
-                  bien.mp_compra_venta = bien.mp_compra_venta == 0 ? 1 : 0;
-                  bien.mp_donacion = bien.mp_donacion == 0 ? 1 : 0;
-                  bien.mp_permuta = bien.mp_permuta == 0 ? 1 : 0;
-                  bien.mp_dacion_pago = bien.mp_dacion_pago == 0 ? 1 : 0;
-                  bien.mp_anticipo_legitima = bien.mp_anticipo_legitima == 0 ? 1 : 0;
-                  bien.mp_otro = bien.mp_otro == 0 ? 1 : 0;
-                  this.logInComponent.datosBienModuleSend = bien;
                 }
     
                 if (laborales == null) {
@@ -288,12 +288,10 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
             });
           } else {
             this.logInComponent.funciones.hideLoading();
-            //this.logInComponent.funciones.mensajeError(msn[1], msn[0]);
           }
         },
         error => {
           this.logInComponent.funciones.hideLoading();
-          //this.funciones.mensajeError("", "No se encontraron datos");
         }
       )
     }
@@ -346,10 +344,13 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
   }
 
   datoslaborales() {
-    this.logInComponent.datosBasicosModuleSend.id_ubigeo = this.ubigeoCtrl.value == null ? 0 : this.ubigeoCtrl.value.id;
-    this.formularioService.verifyItemStatus();
-    /*this._router.navigate(['/laborales']);*/
-    this.logInComponent.registroPosi = 2;
+      this.logInComponent.datosBasicosModuleSend.id_ubigeo = this.ubigeoCtrl.value == null ? 0 : this.ubigeoCtrl.value.id;
+      this.formularioService.verifyItemStatus();
+    if (this.validaMostrarInformacionPersonalInput()) {
+      this.logInComponent.registroPosi = 2;
+    } else {
+      this.logInComponent.registroPosi = 7;
+    }
   }
 
   onExtranjero(value: boolean) {
@@ -357,5 +358,111 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
     if (value) {
       this.ubigeoCtrl.setValue({ id: 0 });
     }
+  }
+
+  valida1():boolean {
+    return (
+        this.logInComponent.datosBasicosModuleSend.apellidos != null &&
+        this.logInComponent.datosBasicosModuleSend.nombres != null &&
+        (this.logInComponent.datosBasicosModuleSend.id_ubigeo > 0 || this.logInComponent.datosBasicosModuleSend.extranjero) &&
+        this.logInComponent.datosBasicosModuleSend.num_documento != null &&
+        this.logInComponent.datosBasicosModuleSend.num_documento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.apellidos.length > 0
+    );
+  }
+  
+  valida2():boolean {
+    return (
+        this.logInComponent.datosBasicosModuleSend.apellidos != null &&
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento != null &&
+        this.logInComponent.datosBasicosModuleSend.domicilio != null &&
+        this.logInComponent.datosBasicosModuleSend.correo_electronico != null &&
+        this.logInComponent.datosBasicosModuleSend.nombres != null &&
+        this.logInComponent.datosBasicosModuleSend.num_documento != null &&
+        (this.logInComponent.datosBasicosModuleSend.id_ubigeo > 0 || this.logInComponent.datosBasicosModuleSend.extranjero) &&
+        this.logInComponent.datosBasicosModuleSend.num_documento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.domicilio.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.correo_electronico.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.apellidos.length > 0
+    );
+  }
+
+  valida3():boolean {
+    return (
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento != null &&
+        this.logInComponent.datosBasicosModuleSend.id_estado_civil != null &&
+        this.logInComponent.datosBasicosModuleSend.domicilio != null &&
+        this.logInComponent.datosBasicosModuleSend.correo_electronico != null &&
+        this.logInComponent.datosBasicosModuleSend.partida != null &&
+        this.logInComponent.datosBasicosModuleSend.sede != null &&
+        this.logInComponent.datosBasicosModuleSend.num_documento != null &&
+        this.logInComponent.datosBasicosModuleSend.nombres != null &&
+        (this.logInComponent.datosBasicosModuleSend.id_ubigeo > 0 || this.logInComponent.datosBasicosModuleSend.extranjero) &&
+        this.logInComponent.datosBasicosModuleSend.apellidos != null &&
+        this.logInComponent.datosBasicosModuleSend.id_estado_civil > 0 &&
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.domicilio.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.correo_electronico.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.partida.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.sede.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.num_documento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.apellidos.length > 0
+    );
+  }
+  
+  valida4():boolean {
+    return (
+        this.logInComponent.datosBasicosModuleSend.partida != null &&
+        this.logInComponent.datosBasicosModuleSend.sede != null &&
+        this.logInComponent.datosBasicosModuleSend.num_documento != null &&
+        this.logInComponent.datosBasicosModuleSend.nombres != null &&
+        this.logInComponent.datosBasicosModuleSend.apellidos != null &&
+        (this.logInComponent.datosBasicosModuleSend.id_ubigeo > 0 || this.logInComponent.datosBasicosModuleSend.extranjero) &&
+        this.logInComponent.datosBasicosModuleSend.partida.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.sede.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.num_documento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.apellidos.length > 0
+    );
+  }
+  
+  valida5():boolean {
+    return (
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento != null &&
+        this.logInComponent.datosBasicosModuleSend.id_estado_civil > 0 &&
+        this.logInComponent.datosBasicosModuleSend.domicilio != null &&
+        this.logInComponent.datosBasicosModuleSend.correo_electronico != null &&
+        this.logInComponent.datosBasicosModuleSend.num_documento != null &&
+        (this.logInComponent.datosBasicosModuleSend.id_ubigeo > 0 || this.logInComponent.datosBasicosModuleSend.extranjero) &&
+        this.logInComponent.datosBasicosModuleSend.nombres != null &&
+        this.logInComponent.datosBasicosModuleSend.apellidos != null &&
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.id_estado_civil > 0 &&
+        this.logInComponent.datosBasicosModuleSend.domicilio.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.correo_electronico.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.num_documento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.apellidos.length > 0
+    );
+  }
+  
+  valida6():boolean {
+    return (
+        this.logInComponent.datosBasicosModuleSend.fecha_nacimiento != null &&
+        this.logInComponent.datosBasicosModuleSend.id_estado_civil > 0 &&
+        this.logInComponent.datosBasicosModuleSend.domicilio != null &&
+        this.logInComponent.datosBasicosModuleSend.num_documento != null &&
+        this.logInComponent.datosBasicosModuleSend.nombres != null &&
+        (this.logInComponent.datosBasicosModuleSend.id_ubigeo > 0 || this.logInComponent.datosBasicosModuleSend.extranjero) &&
+        this.logInComponent.datosBasicosModuleSend.apellidos != null &&
+        this.logInComponent.datosBasicosModuleSend.id_estado_civil > 0 &&
+        this.logInComponent.datosBasicosModuleSend.num_documento.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.nombres.length > 0 &&
+        this.logInComponent.datosBasicosModuleSend.apellidos.length > 0
+    );
   }
 }
